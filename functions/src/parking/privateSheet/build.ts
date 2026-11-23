@@ -1,7 +1,7 @@
 import {geohash} from "./geohash.js";
 import {
   closureReason,
-  coordinateSkip,
+  rowCoordinates,
   isKnownVerification,
   mapFeeUnit,
   normaliseName,
@@ -333,7 +333,7 @@ export function notImportedRows(rows: SourceRow[], build: ImportBuild): NotImpor
   const listed: NotImportedRow[] = [];
   for (const row of rows) {
     if (row.blank) continue;
-    if (coordinateSkip(row.values.Latitude, row.values.Longitude)) continue;
+    if (!rowCoordinates(row.values)) continue;
     const closure = closureReason(row.values["Location Status"]);
     const name = text(row.values["Location Name"]);
     const postcode = text(row.values.Postcode);

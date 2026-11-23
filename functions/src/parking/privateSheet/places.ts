@@ -4,7 +4,7 @@ import {
   isAutopay,
   mapPayMode,
   norm,
-  parseCoord,
+  rowCoordinates,
   parseLocationCode,
   parseMinutes,
   placeId,
@@ -232,13 +232,10 @@ export function legacyPlaceIds(rows: SourceRow[]): string[] {
   const seen = new Set<string>();
   for (const row of rows) {
     if (row.blank) continue;
-    const lat = parseCoord(row.values.Latitude);
-    const lng = parseCoord(row.values.Longitude);
+    const point = rowCoordinates(row.values);
     const name = text(row.values["Location Name"]);
-    if (lat == null || lng == null || !name) continue;
-    if (lat < -90 || lat > 90 || lng < -180 || lng > 180) continue;
-    if (lat === 0 && lng === 0) continue;
-    const id = placeId(name, row.values.Postcode, lat, lng);
+    if (!point || !name) continue;
+    const id = placeId(name, row.values.Postcode, point.lat, point.lng);
     if (seen.has(id)) continue;
     seen.add(id);
     ids.push(id);

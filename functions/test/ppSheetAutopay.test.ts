@@ -3,9 +3,13 @@ import {describe, it} from "node:test";
 import {autopayPlaceAllowed, canonicalOperator} from "../src/parking/contract.js";
 import {buildImport} from "../src/parking/privateSheet/build.js";
 import {
+  coordinatePoint,
+  coordinateSkip,
   isKnownVerification,
+  parseCoord,
   parseLocationCode,
   placeId,
+  rowCoordinates,
   sheetPlaceId,
 } from "../src/parking/privateSheet/mapping.js";
 import {
@@ -39,6 +43,33 @@ function row(values: Record<string, unknown>): Record<string, unknown> {
 }
 
 describe("pp sheet autopay", () => {
+  it("reads coordinate formats and keeps only a UK point", () => {
+    assert.equal(parseCoord("2.3e-05"), 0.000023);
+    assert.equal(parseCoord("51,508375"), 51.508375);
+    assert.equal(parseCoord("-0,272714"), -0.272714);
+    assert.equal(parseCoord("51°30'0\"N"), 51.5);
+    assert.equal(parseCoord("UNCLEAR"), null);
+    const greenwich = coordinatePoint("51.483799", "2.3e-05");
+    assert.equal(greenwich?.lat, 51.483799);
+    assert.ok(greenwich && Math.abs((greenwich.lng) - 0.000023) < 1e-9);
+    assert.deepEqual(coordinatePoint("51.5, -0.12", ""), {lat: 51.5, lng: -0.12});
+    assert.deepEqual(coordinatePoint("-0.12", "51.5"), {lat: 51.5, lng: -0.12});
+    assert.equal(coordinatePoint("48.8566", "2.3522"), null);
+    assert.equal(coordinateSkip(0, 0), true);
+    const linked = rowCoordinates({
+      "Latitude": "",
+      "Longitude": "",
+      "Google Maps link": "https://www.google.com/maps/place/Yard/@51.5074,-0.1278,17z",
+    });
+    assert.equal(linked?.lat, 51.5074);
+    assert.equal(linked?.lng, -0.1278);
+    assert.equal(rowCoordinates({
+      "Latitude": "",
+      "Longitude": "",
+      "Rules Summary": "up to 1 hr £1.60, then £3.10",
+    }), null);
+  });
+
   it("accepts the three validated results and drops the rest", () => {
     assert.equal(isKnownVerification("Confirmed"), true);
     assert.equal(isKnownVerification(" Corrected "), true);

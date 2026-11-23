@@ -515,7 +515,7 @@ Every field except `p` may be null. A bad row drops alone. Dedupe by `id`, else 
 
 | Field | Type | Notes |
 |---|---|---|
-| `p` | `[lat, lng]`, GeoPoint, or `{lat\|latitude, lng\|longitude}` | Required. Out of range or `(0,0)` drops the row |
+| `p` | `[lat, lng]`, GeoPoint, or `{lat\|latitude, lng\|longitude}` | Required. A point outside the UK box (lat 49.8–60.9, lng -8.7–1.8), including `(0,0)`, drops the row |
 | `id` | string | Needed to enter, count down, report, or pay. Without it the row can still be shown |
 | `n` | string | Name |
 | `r` | int metres, `> 0` | The monitor clamps to `10..300`. No `r`: never entered |

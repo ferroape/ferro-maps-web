@@ -60,7 +60,8 @@ test("coordinates accept numbers and numeric strings and reject UNCLEAR", () => 
   assert.equal(parseCoord("unclear"), null);
   assert.equal(parseCoord(""), null);
   assert.equal(parseCoord(null), null);
-  assert.equal(parseCoord("51.5N"), null);
+  assert.equal(parseCoord("51.5N"), 51.5);
+  assert.equal(parseCoord("0.12W"), -0.12);
   const fromNumber = placeId("Yard", "W3 8NW", 51.505716, -0.267111);
   const fromString = placeId("Yard", "W3 8NW", parseCoord("51.505716") ?? 0, parseCoord("-0.267111") ?? 0);
   assert.equal(fromNumber, fromString);

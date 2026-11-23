@@ -4,6 +4,10 @@ import {onSchedule} from "firebase-functions/v2/scheduler";
 import {FieldValue, getFirestore, Timestamp, type Firestore} from "firebase-admin/firestore";
 import {fetchSheetMatrix} from "./privateSheet/sheetsClient.js";
 import {
+  type ExistingParkingPlace,
+  type PlannedPlaceWrite,
+} from "./privateSheet/places.js";
+import {
   syncPrivateParkingOnce,
   type ExistingCellDoc,
   type PlannedCellWrite,
@@ -19,13 +23,19 @@ import {
  * Engine default account.
  *
  * Sheet id and tab are PRIVATE_PARKING_SHEET_ID and PRIVATE_PARKING_SHEET_TAB.
- * The London workbook is 1VHtzY1001e0aRSXE6s_-IJU9YioJtjSNZ5WCOt1IO-o, tab
- * "ALL LONDON (clean)". Those defaults match functions/.env.ferro-maps-staging-v2.
- * Share that spreadsheet with the runtime account as a viewer.
+ * The only location tab is "ALL LONDON (clean)" in workbook
+ * 1VHtzY1001e0aRSXE6s_-IJU9YioJtjSNZ5WCOt1IO-o. UK PILOT - Birmingham and every
+ * other tab are refused. TARIFFS is read only as prices for those PP ids.
+ * The Sheets scope is spreadsheets.readonly. Nothing writes the sheet.
  *
- * The tab is about 12,500 rows and 66 columns. fetchSheetMatrix reads it in
- * pages of 1,000 rows so one response stays within the Sheets payload cap.
- * Writes are batched at 400 ops or 8 MB, whichever comes first.
+ * ferro-maps-dev sets the runtime account in functions/.env.ferro-maps-dev:
+ * private-parking-sync@ferro-maps-dev.iam.gserviceaccount.com. Share the
+ * spreadsheet with that account as a Viewer. Do not create a service-account
+ * key. Do not deploy this job to ferro-maps-staging-v2 from the dev setup.
+ *
+ * The tab is about 12,000 rows and 67 columns, matched by header name.
+ * fetchSheetMatrix reads it in pages of 1,000 rows. Writes are batched at
+ * 400 ops or 8 MB, whichever comes first. Place docs use the PP-###### id.
  *
  * The job returns without writing cells unless config/privateParking.enabled
  * is exactly true. That switch does not show or hide the layer in the apps.
@@ -88,6 +98,51 @@ async function writeRunState(db: Firestore, patch: SyncConfigPatch): Promise<voi
 const MAX_BATCH_OPS = 400;
 const MAX_BATCH_BYTES = 8_000_000;
 
+async function loadExistingPlaces(db: Firestore): Promise<ExistingParkingPlace[]> {
+  const snap = await db.collection("places").select(
+    "contentHash",
+    "source",
+    "payMode",
+    "parkingPence",
+    "parkingTariffs",
+    "locationCode",
+  ).get();
+  return snap.docs.map((doc) => {
+    const source = doc.get("source");
+    const contentHash = doc.get("contentHash");
+    const parking = doc.get("payMode") != null ||
+      doc.get("parkingPence") != null ||
+      doc.get("parkingTariffs") != null ||
+      doc.get("locationCode") != null;
+    return {
+      id: doc.id,
+      source: typeof source === "string" ? source : undefined,
+      contentHash: typeof contentHash === "string" ? contentHash : undefined,
+      parking,
+    };
+  });
+}
+
+async function commitPlaceWrites(db: Firestore, writes: PlannedPlaceWrite[]): Promise<void> {
+  let batch = db.batch();
+  let pending = 0;
+  for (const write of writes) {
+    if (pending === MAX_BATCH_OPS) {
+      await batch.commit();
+      batch = db.batch();
+      pending = 0;
+    }
+    const ref = db.collection("places").doc(write.id);
+    if (write.action === "delete") {
+      batch.delete(ref);
+    } else if (write.data) {
+      batch.set(ref, {...write.data, updatedAt: FieldValue.serverTimestamp()});
+    }
+    pending += 1;
+  }
+  if (pending > 0) await batch.commit();
+}
+
 async function commitWrites(db: Firestore, writes: PlannedCellWrite[]): Promise<void> {
   let batch = db.batch();
   let pending = 0;
@@ -145,7 +200,9 @@ export const syncPrivateParkingSheet = onSchedule(
       tab,
       lastGoodRowCount,
       existing: await loadExisting(db),
+      existingPlaces: await loadExistingPlaces(db),
       loadSheet: fetchSheetMatrix,
+      loadTariffs: fetchSheetMatrix,
     });
     if (result.status === "aborted") {
       if (result.config) await writeRunState(db, result.config);
@@ -160,6 +217,7 @@ export const syncPrivateParkingSheet = onSchedule(
       return;
     }
     if (result.writes.length > 0) await commitWrites(db, result.writes);
+    if (result.placeWrites.length > 0) await commitPlaceWrites(db, result.placeWrites);
     if (result.config) await writeRunState(db, result.config);
     logger.info("syncPrivateParkingSheet finished", {
       writes: result.writes.length,
@@ -167,6 +225,8 @@ export const syncPrivateParkingSheet = onSchedule(
       unchanged: result.unchanged,
       imported: result.imported,
       usableRows: result.usableRows,
+      placeWrites: result.placeWrites.length,
+      placesDeleted: result.placesDeleted,
     });
   },
 );

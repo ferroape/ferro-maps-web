@@ -1,4 +1,5 @@
 import {createHash} from "node:crypto";
+import {isPpPlaceId} from "../contract.js";
 import {
   PAY_MODES,
   type AudCode,
@@ -36,6 +37,11 @@ export function formatCoord(value: number): string {
   return value < 0 ? `-${body}` : body;
 }
 
+/*
+ * Legacy document id: sha256(name|postcode|lat|lng).
+ * New documents use the sheet Place ID (`PP-######`). The hash is only used
+ * to find and delete those old documents.
+ */
 export function placeId(name: unknown, postcode: unknown, lat: number, lng: number): string {
   const key = [
     normaliseName(name),
@@ -44,6 +50,12 @@ export function placeId(name: unknown, postcode: unknown, lat: number, lng: numb
     formatCoord(lng),
   ].join("|");
   return createHash("sha256").update(key).digest("hex");
+}
+
+/* `PP-000001`. Blank, Google place ids, and other text are not ids. */
+export function sheetPlaceId(value: unknown): string | null {
+  const raw = text(value).toUpperCase();
+  return isPpPlaceId(raw) ? raw : null;
 }
 
 /* Numbers and numeric strings. `UNCLEAR` and blanks are not coordinates. */
@@ -167,9 +179,19 @@ export function parseDate(value: unknown): string | undefined {
   return utcDate(expandYear(slash[3]), Number(slash[2]), Number(slash[1]));
 }
 
+/*
+ * Tharidu's gate. `Confirmed, details not published` is validated.
+ * Needs on-site check, No evidence, and a blank cell are not.
+ */
+const KNOWN_VERIFICATION = new Set([
+  "confirmed",
+  "corrected",
+  "confirmed, details not published",
+  "confirmed details not published",
+]);
+
 export function isKnownVerification(value: unknown): boolean {
-  const s = norm(value);
-  return s === "confirmed" || s === "corrected";
+  return KNOWN_VERIFICATION.has(norm(value));
 }
 
 export function parseMinutes(value: unknown): number | undefined {
@@ -302,6 +324,8 @@ function providerSlug(raw: string): string | undefined {
   if (s.includes("ecpparkbuddy") || s.includes("eurocarparks")) return "eurocarparks";
   if (s.includes("parkbuddy")) return "parkbuddy";
   if (s.includes("apcoa")) return "apcoa";
+  if (s === "ncp" || s.includes("nationalcarparks")) return "ncp";
+  if (s.includes("qpark")) return "qpark";
   if (s.includes("evology")) return "evology";
   return undefined;
 }
@@ -317,7 +341,20 @@ export interface LocationCode {
  * `PayByPhone location 37208` -> `{locationCode: "37208", locationProvider: "paybyphone"}`.
  * A second different code is reported and the first code is kept.
  */
-const PROVIDER_SOURCE = "pay\\s*-?\\s*by\\s*-?\\s*phone|paybyphone|ring\\s*-?\\s*go|just\\s*-?\\s*park|euro\\s*car\\s*parks|ecp\\s*parkbuddy|parkbuddy|apcoa(?:\\s+connect)?|evology";
+const PROVIDER_SOURCE = [
+  "pay\\s*-?\\s*by\\s*-?\\s*phone",
+  "paybyphone",
+  "ring\\s*-?\\s*go",
+  "just\\s*-?\\s*park",
+  "euro\\s*car\\s*parks",
+  "ecp\\s*parkbuddy",
+  "parkbuddy",
+  "apcoa(?:\\s+connect)?",
+  "national\\s+car\\s+parks",
+  "q\\s*-?\\s*park",
+  "ncp",
+  "evology",
+].join("|");
 
 export function parseLocationCode(value: unknown): LocationCode | undefined {
   if (typeof value !== "string" || !value.trim()) return undefined;
@@ -388,6 +425,8 @@ export function skipReason(values: Record<string, unknown>): string | null {
   if (coordinateSkip(values.Latitude, values.Longitude)) return "bad_coordinates";
   if (isNotParkable(values["Can Park? (Yes/No/Conditional)"])) return "not_parkable";
   if (!text(values["Location Name"])) return "missing_name";
+  if (!isKnownVerification(values["Verification Result"])) return "unvalidated";
+  if (!sheetPlaceId(values["Place ID"])) return "missing_pp_id";
   return null;
 }
 
@@ -440,9 +479,11 @@ export function mapPlace(values: Record<string, unknown>, sheetRow?: number): Pr
   const lat = parseCoord(values.Latitude);
   const lng = parseCoord(values.Longitude);
   if (lat == null || lng == null) throw new Error("mapPlace called without coordinates");
+  const id = sheetPlaceId(values["Place ID"]);
+  if (!id) throw new Error("mapPlace called without a PP id");
   const name = text(values["Location Name"]);
   const place: PrivatePlace = {
-    id: placeId(name, values.Postcode, lat, lng),
+    id,
     n: name,
     p: [lat, lng],
     s: mapCanPark(values["Can Park? (Yes/No/Conditional)"]),

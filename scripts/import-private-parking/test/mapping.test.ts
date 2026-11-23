@@ -124,6 +124,15 @@ test("location codes parse provider and code and ignore a clock time", () => {
   assert.equal(locationId?.locationCode, "59794");
   assert.equal(locationId?.ambiguous, false);
   assert.equal(parseLocationCode("PayByPhone (app or 0330 400 7275)"), undefined);
+  const ncp = parseLocationCode("Pay at the NCP machine, location 48219, or in the app.");
+  assert.equal(ncp?.locationCode, "48219");
+  assert.equal(ncp?.locationProvider, "ncp");
+  const qpark = parseLocationCode("Q-Park code 120045. Prebook online.");
+  assert.equal(qpark?.locationCode, "120045");
+  assert.equal(qpark?.locationProvider, "qpark");
+  const national = parseLocationCode("National Car Parks location 70012");
+  assert.equal(national?.locationProvider, "ncp");
+  assert.equal(national?.locationCode, "70012");
 });
 
 test("a displayed parking charge becomes integer pence and other text is omitted", () => {
@@ -159,6 +168,7 @@ test("a displayed parking charge becomes integer pence and other text is omitted
     Latitude: "51.505716",
     Longitude: "-0.267111",
     "Can Park? (Yes/No/Conditional)": "Yes",
+    "Place ID": "PP-000001",
     "Price Status": "Published",
     "Parking Charge (£)": "£0.87",
   });
@@ -169,6 +179,7 @@ test("a displayed parking charge becomes integer pence and other text is omitted
     Latitude: "51.505716",
     Longitude: "-0.267111",
     "Can Park? (Yes/No/Conditional)": "Yes",
+    "Place ID": "PP-000001",
     "Price Status": "Published",
     "Parking Charge (£)": 0.87,
   }).fee, 87);
@@ -180,6 +191,7 @@ test("a displayed parking charge becomes integer pence and other text is omitted
       Latitude: "51.505716",
       Longitude: "-0.267111",
       "Can Park? (Yes/No/Conditional)": "Yes",
+      "Place ID": "PP-000001",
       "Price Status": "Published",
       "Parking Charge (£)": charge,
     });
@@ -204,6 +216,7 @@ test("a mapped place keeps string coordinates and does not invent srcType or rad
     Postcode: "W3 8NW",
     Latitude: "51.505716",
     Longitude: "-0.267111",
+    "Place ID": "PP-000001",
     "Can Park? (Yes/No/Conditional)": "Yes",
     "Who Can Park": "Anyone (paid)",
     "Verification Result": "Corrected",
@@ -251,7 +264,7 @@ test("a mapped place keeps string coordinates and does not invent srcType or rad
   assert.equal(JSON.stringify(place).includes("Total incl"), false);
 });
 
-test("closed rows and bad coordinates are skipped, and duplicate name+postcode pairs merge", () => {
+test("closed rows and bad coordinates are skipped, and the same PP id merges", () => {
   assert.equal(skipReason({"Location Status": "Closed", Latitude: 51, Longitude: -0.1, "Location Name": "A"}), "closed");
   assert.equal(skipReason({"Location Status": "Temporarily closed", Latitude: 51, Longitude: -0.1, "Location Name": "A"}), "temporarily_closed");
   assert.equal(skipReason({"Location Status": "Open", Latitude: "UNCLEAR", Longitude: "UNCLEAR", "Location Name": "A"}), "bad_coordinates");
@@ -262,16 +275,34 @@ test("closed rows and bad coordinates are skipped, and duplicate name+postcode p
     "Location Name": "A",
     "Can Park? (Yes/No/Conditional)": "No",
   }), "not_parkable");
+  assert.equal(skipReason({
+    "Location Status": "Open",
+    Latitude: 51.5,
+    Longitude: -0.1,
+    "Location Name": "A",
+    "Verification Result": "Needs on-site check",
+    "Place ID": "PP-000010",
+  }), "unvalidated");
+  assert.equal(skipReason({
+    "Location Status": "Open",
+    Latitude: 51.5,
+    Longitude: -0.1,
+    "Location Name": "A",
+    "Verification Result": "Confirmed, details not published",
+  }), "missing_pp_id");
   const rows: SourceRow[] = [
-    row(2, {"Location Name": "Yard", Postcode: "W1 1AA", Latitude: "51.5", Longitude: "-0.1", "Location Status": "Open", "Verification Result": "Needs on-site check", "Confidence (1-5)": 1, "Date Captured": "2026-10-30"}),
-    row(3, {"Location Name": "Yard", Postcode: "W11AA", Latitude: 51.5, Longitude: -0.12, "Location Status": "Open", "Verification Result": "Confirmed", "Confidence (1-5)": 5, "Date Captured": "30/10/26", "Evidence Type": "Google Maps only", "Who Can Park": "Customers only"}),
-    row(4, {"Location Name": "Shut", Postcode: "E1 1AA", Latitude: 51.51, Longitude: -0.11, "Location Status": "Closed"}),
-    row(5, {}),
+    row(2, {"Location Name": "Yard", Postcode: "W1 1AA", Latitude: "51.5", Longitude: "-0.1", "Location Status": "Open", "Verification Result": "Needs on-site check", "Place ID": "PP-000010", "Confidence (1-5)": 1, "Date Captured": "2026-10-30"}),
+    row(3, {"Location Name": "Yard", Postcode: "W11AA", Latitude: 51.5, Longitude: -0.12, "Location Status": "Open", "Verification Result": "Confirmed", "Place ID": "PP-000010", "Confidence (1-5)": 5, "Date Captured": "30/10/26", "Evidence Type": "Google Maps only", "Who Can Park": "Customers only"}),
+    row(4, {"Location Name": "Also", Postcode: "W1 1AA", Latitude: 51.5, Longitude: -0.12, "Location Status": "Open", "Verification Result": "Confirmed", "Place ID": "PP-000010", "Confidence (1-5)": 1}),
+    row(5, {"Location Name": "Shut", Postcode: "E1 1AA", Latitude: 51.51, Longitude: -0.11, "Location Status": "Closed"}),
+    row(6, {}),
   ];
   const build = buildImport(rows, new Date("2026-11-01T00:00:00.000Z"));
   assert.equal(build.skipped.blank_row, 1);
   assert.equal(build.skipped.closed, 1);
+  assert.equal(build.skipped.unvalidated, 1);
   assert.equal(build.imported.length, 1);
+  assert.equal(build.imported[0].place.id, "PP-000010");
   assert.equal(build.duplicates.groupsMerged, 1);
   assert.equal(build.duplicates.rowsDropped, 1);
   assert.equal(build.imported[0].place.q, "known");
@@ -281,7 +312,7 @@ test("closed rows and bad coordinates are skipped, and duplicate name+postcode p
   assert.equal(build.cells[0].data.v, 1);
   assert.equal(build.cells[0].data.expiresAt, "2026-11-15T00:00:00.000Z");
   assert.equal(build.cells[0].data.shards, undefined);
-  assert.equal(build.verifiedSourceRows, 1);
+  assert.equal(build.verifiedSourceRows, 2);
   const summary = summarise(build, "ALL LONDON (clean)");
   assert.equal(summary.wroteToFirestore, false);
   assert.equal(summary.mode, "dry-run");
@@ -292,8 +323,8 @@ test("closed rows and bad coordinates are skipped, and duplicate name+postcode p
 
 test("mappable rows that are not imported are closed or merged duplicates", () => {
   const rows: SourceRow[] = [
-    row(2, {"Location Name": "Kept", Postcode: "W1 1AA", Latitude: 51.5, Longitude: -0.1, "Location Status": "Open"}),
-    row(3, {"Location Name": "Kept", Postcode: "W11AA", Latitude: 51.5, Longitude: -0.11, "Location Status": "Open"}),
+    row(2, {"Location Name": "Kept", Postcode: "W1 1AA", Latitude: 51.5, Longitude: -0.1, "Location Status": "Open", "Verification Result": "Confirmed", "Place ID": "PP-000020"}),
+    row(3, {"Location Name": "Kept", Postcode: "W11AA", Latitude: 51.5, Longitude: -0.11, "Location Status": "Open", "Verification Result": "Confirmed", "Place ID": "PP-000020"}),
     row(4, {"Location Name": "Shut", Postcode: "E1 1AA", Latitude: 51.51, Longitude: -0.12, "Location Status": "Closed"}),
     row(5, {"Location Name": "Pause", Postcode: "E1 2AA", Latitude: "51.52", Longitude: "-0.13", "Location Status": "Temporarily closed"}),
     row(6, {"Location Name": "Unclear", Postcode: "N1 1AA", Latitude: "UNCLEAR", Longitude: "UNCLEAR", "Location Status": "Open"}),
@@ -361,7 +392,7 @@ test("an unknown Ferro Pay Mode is omitted and the warning names only the row id
   const warn = mock.method(console, "warn", () => undefined);
   try {
     const byPlaceId = mapPlace(payModeValues({
-      "Place ID": "row-17",
+      "Place ID": "PP-000017",
       "Ferro Pay Mode": leaked,
     }), 44);
     assert.equal("payMode" in byPlaceId, false);
@@ -382,13 +413,13 @@ test("an unknown Ferro Pay Mode is omitted and the warning names only the row id
       return String(call.arguments[0]);
     });
     assert.deepEqual(lines, [
-      "private parking payMode omitted for row-17",
-      "private parking payMode omitted for 44",
+      "private parking payMode omitted for PP-000017",
+      "private parking payMode omitted for PP-000001",
       `private parking payMode omitted for ${bare.id}`,
       "private parking payMode omitted for row-8",
       "private parking payMode omitted for row-8",
       "private parking payMode omitted for row-9",
-      "private parking payMode omitted for 9",
+      "private parking payMode omitted for PP-000001",
     ]);
     for (const secret of [leaked, "in-app", "in_app"]) {
       assert.equal(lines.some((line) => line.includes(secret)), false);
@@ -406,10 +437,13 @@ test("a sheet without Ferro Pay Mode omits payMode", () => {
       Latitude: 51.5,
       Longitude: -0.12,
       "Location Status": "Open",
+      "Verification Result": "Confirmed",
+      "Place ID": "PP-000030",
     }),
   ];
   const build = buildImport(rows, new Date("2026-11-01T00:00:00.000Z"));
   assert.equal(build.imported.length, 1);
+  assert.equal(build.imported[0].place.id, "PP-000030");
   assert.equal("payMode" in build.imported[0].place, false);
   assert.equal("Ferro Pay Mode" in build.imported[0].values, false);
 });
@@ -421,17 +455,18 @@ test("a merged duplicate carries Ferro Pay Mode onto the kept row", () => {
     Latitude: 51.5,
     Longitude: -0.12,
     "Location Status": "Open",
+    "Place ID": "PP-000040",
   };
   const filled = buildImport([
-    row(2, {...shared, "Verification Result": "Confirmed", "Ferro Pay Mode": "  "}),
-    row(3, {...shared, "Ferro Pay Mode": "off"}),
+    row(2, {...shared, "Verification Result": "Confirmed", "Confidence (1-5)": 5, "Ferro Pay Mode": "  "}),
+    row(3, {...shared, "Verification Result": "Confirmed", "Ferro Pay Mode": "off"}),
   ], new Date("2026-11-01T00:00:00.000Z"));
   assert.equal(filled.imported.length, 1);
   assert.equal(filled.imported[0].sheetRow, 2);
   assert.equal(filled.imported[0].place.payMode, "off");
   const kept = buildImport([
-    row(2, {...shared, "Verification Result": "Confirmed", "Ferro Pay Mode": "inapp"}),
-    row(3, {...shared, "Ferro Pay Mode": "off"}),
+    row(2, {...shared, "Verification Result": "Confirmed", "Confidence (1-5)": 5, "Ferro Pay Mode": "inapp"}),
+    row(3, {...shared, "Verification Result": "Confirmed", "Ferro Pay Mode": "off"}),
   ], new Date("2026-11-01T00:00:00.000Z"));
   assert.equal(kept.imported.length, 1);
   assert.equal(kept.imported[0].place.payMode, "inapp");
@@ -460,6 +495,26 @@ test("the importer refuses to write without --write and --project", async () => 
   });
   assert.equal(ignored, 0);
   assert.equal(writes, 0);
+  let reads = 0;
+  const otherTab = await run(["--input", "missing.xlsx", "--sheet", "UK PILOT - Birmingham"], {
+    stderr: () => undefined,
+    stdout: () => undefined,
+    read: async () => {
+      reads += 1;
+      return [];
+    },
+  });
+  assert.equal(otherTab, 2);
+  assert.equal(reads, 0);
+  const staging = await run(["--write", "--project", "ferro-maps-staging-v2", "--input", "missing.xlsx"], {
+    stderr: () => undefined,
+    read: async () => [],
+    writeCells: async () => {
+      writes += 1;
+    },
+  });
+  assert.equal(staging, 2);
+  assert.equal(writes, 0);
 });
 
 function payModeValues(extra: Record<string, unknown>): Record<string, unknown> {
@@ -469,6 +524,8 @@ function payModeValues(extra: Record<string, unknown>): Record<string, unknown> 
     Latitude: "51.505716",
     Longitude: "-0.267111",
     "Can Park? (Yes/No/Conditional)": "Yes",
+    "Verification Result": "Confirmed",
+    "Place ID": "PP-000001",
     ...extra,
   };
 }

@@ -14,6 +14,7 @@ import {
   REQUESTS,
   SERVICE_FEE_PENCE,
   STRIPE_CUSTOMERS,
+  autopayPlaceAllowed,
   canonicalOperator,
   chargeIdempotencyKey,
   chargeRetryIdempotencyKey,
@@ -306,7 +307,7 @@ async function loadPlace(
   maxPence: number,
 ): Promise<PricedPlace> {
   const snap = await db.collection(PLACES).doc(placeId).get();
-  if (!snap.exists) {
+  if (!snap.exists || !autopayPlaceAllowed(placeId, snap.get("source"))) {
     throw new ParkingPaymentError("not-found", "We couldn't find this place.");
   }
   if (snap.get("payMode") !== "inapp") {

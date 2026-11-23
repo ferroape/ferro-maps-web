@@ -8,6 +8,7 @@ import {
   text,
   normalisePostcode,
   parseDate,
+  sheetPlaceId,
   skipReason,
   mapConf,
   isApproxPrecision,
@@ -88,8 +89,17 @@ function comparePriority(a: SourceRow, b: SourceRow): number {
   return 0;
 }
 
+/* Same PP-###### id is one place. Rows without that id are not merged together. */
 export function mergeKey(values: Record<string, unknown>): string {
-  return `${normaliseName(values["Location Name"])}|${normalisePostcode(values.Postcode)}`;
+  const id = sheetPlaceId(values["Place ID"]);
+  if (id) return id;
+  return [
+    "unkeyed",
+    normaliseName(values["Location Name"]),
+    normalisePostcode(values.Postcode),
+    text(values.Latitude),
+    text(values.Longitude),
+  ].join("|");
 }
 
 /* Every non-blank column is carried onto the kept row, including Ferro Pay Mode. */
@@ -339,6 +349,14 @@ export function notImportedRows(rows: SourceRow[], build: ImportBuild): NotImpor
       listed.push({sheetRow: row.sheetRow, name, postcode, reason: "not parkable"});
       continue;
     }
+    if (!isKnownVerification(row.values["Verification Result"])) {
+      listed.push({sheetRow: row.sheetRow, name, postcode, reason: "unvalidated"});
+      continue;
+    }
+    if (!sheetPlaceId(row.values["Place ID"])) {
+      listed.push({sheetRow: row.sheetRow, name, postcode, reason: "missing pp id"});
+      continue;
+    }
     const kept = keptByDropped.get(row.sheetRow);
     if (kept != null) {
       listed.push({
@@ -431,6 +449,7 @@ export function summarise(build: ImportBuild, sheet: string): DryRunSummary {
 
   const notes = [
     "Dry run. No Firestore client was created and nothing was written.",
+    "Only Confirmed, Confirmed details not published, and Corrected rows are published. The place id is the sheet PP-###### id.",
     "srcType is only official, gmaps, onsite, or none. Partial official evidence is official. Blank evidence omits srcType. Any other evidence text is none.",
     "feeUnit is hour, visit, or day only when the tariff names one of those units. Flat rate per night is omitted. Mixed hour/day/visit/night text is omitted.",
     "r and tl are not written. payMode is set from Ferro Pay Mode when the trimmed cell is inapp, handoff, or off, case-insensitive. Blank or any other value omits payMode. A sheet without that column omits it. Missing payMode means handoff in the apps.",

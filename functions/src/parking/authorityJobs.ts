@@ -50,9 +50,12 @@ export interface JobOutcome {
 }
 
 const OPERATOR_HOME: Record<string, string> = {
-  RingGo: "https://www.myringgo.com/",
-  PayByPhone: "https://www.paybyphone.co.uk/",
-  JustPark: "https://www.justpark.com/",
+  "RingGo": "https://www.myringgo.com/",
+  "PayByPhone": "https://www.paybyphone.co.uk/",
+  "JustPark": "https://www.justpark.com/",
+  "NCP": "https://www.ncp.co.uk/",
+  "APCOA": "https://www.apcoa.co.uk/",
+  "Q-Park": "https://www.q-park.co.uk/",
 };
 
 export function operatorPaymentUrl(operator: string, explicit: unknown): string {

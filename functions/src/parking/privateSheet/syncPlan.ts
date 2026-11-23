@@ -1,6 +1,13 @@
 import {createHash} from "node:crypto";
 import {buildImport, CELL_TTL_MS} from "./build.js";
-import {coordinateSkip} from "./mapping.js";
+import {skipReason} from "./mapping.js";
+import {
+  legacyPlaceIds,
+  payablePlaces,
+  planPlaceWrites,
+  type ExistingParkingPlace,
+  type PlannedPlaceWrite,
+} from "./places.js";
 import {rowsFromMatrix} from "./rows.js";
 import {type PrivatePlace} from "./types.js";
 
@@ -11,6 +18,10 @@ export const MIN_REMAINING_MS = 7 * 24 * 60 * 60 * 1000;
 export const MASS_DROP_RATIO = 0.9;
 export const SHEETS_READONLY_SCOPE = "https://www.googleapis.com/auth/spreadsheets.readonly";
 
+/* The only location tab. TARIFFS is a price table for these rows, not a location source. */
+export const LONDON_CLEAN_TAB = "ALL LONDON (clean)";
+export const TARIFFS_TAB = "TARIFFS";
+
 export const REQUIRED_HEADERS = [
   "Location Name",
   "Latitude",
@@ -18,6 +29,8 @@ export const REQUIRED_HEADERS = [
   "Postcode",
   "Location Status",
   "Evidence Type",
+  "Verification Result",
+  "Place ID",
 ] as const;
 
 export interface ExistingCellDoc {
@@ -141,6 +154,9 @@ export interface SyncOnceResult {
   unchanged: number;
   expired: number;
   imported: number;
+  placeWrites: PlannedPlaceWrite[];
+  placesUnchanged: number;
+  placesDeleted: number;
   config: SyncConfigPatch | null;
 }
 
@@ -157,10 +173,9 @@ export function headerAbortReason(matrix: unknown[][]): string | null {
   return missing.length > 0 ? "header-unexpected" : null;
 }
 
+/* Rows that will be published. An unverified sheet aborts instead of emptying the cells. */
 export function usableRowCount(matrix: unknown[][]): number {
-  return rowsFromMatrix(matrix).filter((row) => {
-    return !row.blank && !coordinateSkip(row.values.Latitude, row.values.Longitude);
-  }).length;
+  return rowsFromMatrix(matrix).filter((row) => !row.blank && skipReason(row.values) == null).length;
 }
 
 export function rowCountAbortReason(usableRows: number, lastGoodRowCount: number | null): string | null {
@@ -182,6 +197,9 @@ function idle(status: "disabled" | "missing-params"): SyncOnceResult {
     unchanged: 0,
     expired: 0,
     imported: 0,
+    placeWrites: [],
+    placesUnchanged: 0,
+    placesDeleted: 0,
     config: null,
   };
 }
@@ -195,6 +213,9 @@ function aborted(reason: string, usableRows = 0): SyncOnceResult {
     unchanged: 0,
     expired: 0,
     imported: 0,
+    placeWrites: [],
+    placesUnchanged: 0,
+    placesDeleted: 0,
     config: {lastAbortReason: reason},
   };
 }
@@ -206,10 +227,14 @@ export async function syncPrivateParkingOnce(input: {
   tab: string;
   lastGoodRowCount: number | null;
   existing: ExistingCellDoc[];
+  existingPlaces?: ExistingParkingPlace[];
   loadSheet: SheetLoader;
+  /* TARIFFS tab only. Omitted in tests that do not price places. A throw aborts the run. */
+  loadTariffs?: SheetLoader;
 }): Promise<SyncOnceResult> {
   if (!input.enabled) return idle("disabled");
   if (input.sheetId.trim() === "" || input.tab.trim() === "") return idle("missing-params");
+  if (input.tab.trim() !== LONDON_CLEAN_TAB) return aborted("tab-not-london");
   let matrix: unknown[][];
   try {
     matrix = await input.loadSheet(input.sheetId, input.tab);
@@ -222,7 +247,17 @@ export async function syncPrivateParkingOnce(input: {
   const usableRows = usableRowCount(matrix);
   const drop = rowCountAbortReason(usableRows, input.lastGoodRowCount);
   if (drop) return aborted(drop, usableRows);
-  const build = buildImport(rowsFromMatrix(matrix), input.now);
+  let tariffMatrix: unknown[][] = [];
+  if (input.loadTariffs) {
+    try {
+      tariffMatrix = await input.loadTariffs(input.sheetId, TARIFFS_TAB);
+    } catch (err) {
+      const name = err instanceof Error ? err.name : "Error";
+      return aborted(`sheets-read-error:${name}`, usableRows);
+    }
+  }
+  const sourceRows = rowsFromMatrix(matrix);
+  const build = buildImport(sourceRows, input.now);
   const desired = build.cells.map((doc) => ({
     id: doc.id,
     cell: doc.data.cell,
@@ -230,6 +265,11 @@ export async function syncPrivateParkingOnce(input: {
     shards: doc.data.shards,
   }));
   const plan = planPrivateParkingWrites({now: input.now, desired, existing: input.existing});
+  const places = planPlaceWrites({
+    desired: payablePlaces(build.imported, tariffMatrix),
+    existing: input.existingPlaces ?? [],
+    legacyIds: legacyPlaceIds(sourceRows),
+  });
   return {
     status: "ok",
     usableRows,
@@ -237,6 +277,9 @@ export async function syncPrivateParkingOnce(input: {
     unchanged: plan.unchanged,
     expired: plan.expired,
     imported: build.imported.length,
+    placeWrites: places.writes,
+    placesUnchanged: places.unchanged,
+    placesDeleted: places.deleted,
     config: {
       lastGoodRowCount: usableRows,
       lastGoodRunAt: input.now.toISOString(),

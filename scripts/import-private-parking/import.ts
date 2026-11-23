@@ -154,6 +154,14 @@ export async function run(argv: string[], io: RunIO = {}): Promise<number> {
     stderr("refusing to run: --input is required. Nothing was written.");
     return 2;
   }
+  if (args.sheet !== SHEET_NAME) {
+    stderr(`refusing to read ${args.sheet}. Location rows come only from ${SHEET_NAME}. Nothing was written.`);
+    return 2;
+  }
+  if (args.write && args.project === "ferro-maps-staging-v2") {
+    stderr("refusing to write to ferro-maps-staging-v2. Nothing was written.");
+    return 2;
+  }
   const now = args.now ? new Date(args.now) : new Date();
   if (Number.isNaN(now.getTime())) {
     stderr("refusing to run: --now is not a time. Nothing was written.");

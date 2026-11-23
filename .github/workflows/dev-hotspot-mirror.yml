@@ -1,0 +1,57 @@
+name: Dev hotspot mirror
+
+# One-way, read-only copy of live active hotspot pins
+# (ferro-maps-staging-v2/hotspots_test, expire_at > now) into ferro-maps-dev,
+# so Ferro Dev builds show real SURGE pins. Nothing is written to live.
+#
+# Off until the repo variable DEV_HOTSPOT_MIRROR_ENABLED is "true" and both
+# secrets exist. Ubuntu only. The repo is public, so these minutes are free.
+# Logs print counts only: they are public.
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Plan only, write nothing to dev"
+        type: boolean
+        default: true
+      reconcile:
+        description: "Also list dev ids and clear strays"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dev-hotspot-mirror
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    if: vars.DEV_HOTSPOT_MIRROR_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: scripts/mirror-dev-hotspots
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: scripts/mirror-dev-hotspots/package-lock.json
+
+      - run: npm ci --no-audit --no-fund
+
+      - name: Mirror
+        env:
+          LIVE_FIRESTORE_READER_KEY: ${{ secrets.LIVE_FIRESTORE_READER_KEY }}
+          DEV_FIRESTORE_MIRROR_KEY: ${{ secrets.DEV_FIRESTORE_MIRROR_KEY }}
+          MIRROR_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+          MIRROR_RECONCILE: ${{ github.event_name == 'workflow_dispatch' && inputs.reconcile || 'false' }}
+        run: npm run --silent mirror

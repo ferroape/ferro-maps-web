@@ -14,3 +14,6 @@ pglite-debug.log
 .turbo
 memory/
 .vercel
+
+# google-github-actions/auth credential files
+gha-creds-*.json

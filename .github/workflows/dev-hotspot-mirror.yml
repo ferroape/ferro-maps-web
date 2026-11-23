@@ -4,9 +4,13 @@ name: Dev hotspot mirror
 # (ferro-maps-staging-v2/hotspots_test, expire_at > now) into ferro-maps-dev,
 # so Ferro Dev builds show real SURGE pins. Nothing is written to live.
 #
-# Off until the repo variable DEV_HOTSPOT_MIRROR_ENABLED is "true" and both
-# secrets exist. Ubuntu only. The repo is public, so these minutes are free.
-# Logs print counts only: they are public.
+# Keyless: GitHub OIDC -> Workload Identity Federation (pool in ferro-maps-dev)
+# -> impersonate one service account per project. No JSON keys exist.
+#
+# Off until the repo variable DEV_HOTSPOT_MIRROR_ENABLED is "true". Repo
+# variables GCP_WIF_PROVIDER, LIVE_MIRROR_SA and DEV_MIRROR_SA must be set.
+# Ubuntu only. The repo is public, so these minutes are free.
+# Logs print counts only: they are public. No artifacts are uploaded.
 
 on:
   schedule:
@@ -24,6 +28,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 concurrency:
   group: dev-hotspot-mirror
@@ -31,14 +36,34 @@ concurrency:
 
 jobs:
   mirror:
-    if: vars.DEV_HOTSPOT_MIRROR_ENABLED == 'true'
+    # The WIF provider only admits refs/heads/main of this repo, so other
+    # refs would fail at auth anyway; skip them here instead.
+    if: vars.DEV_HOTSPOT_MIRROR_ENABLED == 'true' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    defaults:
-      run:
-        working-directory: scripts/mirror-dev-hotspots
     steps:
+      # Checkout must come before auth: it would delete the credential files.
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Auth live (read-only)
+        id: live
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.LIVE_MIRROR_SA }}
+          create_credentials_file: true
+          export_environment_variables: false
+
+      - name: Auth dev
+        id: dev
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.DEV_MIRROR_SA }}
+          create_credentials_file: true
+          export_environment_variables: false
 
       - uses: actions/setup-node@v4
         with:
@@ -46,12 +71,26 @@ jobs:
           cache: npm
           cache-dependency-path: scripts/mirror-dev-hotspots/package-lock.json
 
-      - run: npm ci --no-audit --no-fund
+      - name: Install
+        working-directory: scripts/mirror-dev-hotspots
+        run: npm ci --no-audit --no-fund
 
       - name: Mirror
+        working-directory: scripts/mirror-dev-hotspots
         env:
-          LIVE_FIRESTORE_READER_KEY: ${{ secrets.LIVE_FIRESTORE_READER_KEY }}
-          DEV_FIRESTORE_MIRROR_KEY: ${{ secrets.DEV_FIRESTORE_MIRROR_KEY }}
+          LIVE_CREDENTIALS_FILE: ${{ steps.live.outputs.credentials_file_path }}
+          DEV_CREDENTIALS_FILE: ${{ steps.dev.outputs.credentials_file_path }}
+          LIVE_MIRROR_SA: ${{ vars.LIVE_MIRROR_SA }}
+          DEV_MIRROR_SA: ${{ vars.DEV_MIRROR_SA }}
           MIRROR_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
           MIRROR_RECONCILE: ${{ github.event_name == 'workflow_dispatch' && inputs.reconcile || 'false' }}
         run: npm run --silent mirror
+
+      # With export_environment_variables off, the auth post step does not
+      # know these paths, so remove both files here.
+      - name: Remove credential files
+        if: always()
+        env:
+          LIVE_CREDENTIALS_FILE: ${{ steps.live.outputs.credentials_file_path }}
+          DEV_CREDENTIALS_FILE: ${{ steps.dev.outputs.credentials_file_path }}
+        run: rm -f -- "$LIVE_CREDENTIALS_FILE" "$DEV_CREDENTIALS_FILE" "$GITHUB_WORKSPACE"/gha-creds-*.json

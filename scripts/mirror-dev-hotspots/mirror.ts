@@ -4,20 +4,26 @@
  *   live  ferro-maps-staging-v2  hotspots_test where expire_at > now   READ ONLY
  *   dev   ferro-maps-dev         hotspots_test + _devMirror/hotspots_test
  *
- * Nothing is ever written to the live project. The live key should be a
- * roles/datastore.viewer account, so a write would be refused there anyway.
+ * Nothing is ever written to the live project. The live account is
+ * roles/datastore.viewer, so a write would be refused there anyway.
+ *
+ * Auth is keyless in CI: google-github-actions/auth writes one Workload
+ * Identity Federation credential file per service account.
  *
  * Env:
- *   LIVE_FIRESTORE_READER_KEY   service account JSON, ferro-maps-staging-v2, datastore.viewer
- *   DEV_FIRESTORE_MIRROR_KEY    service account JSON, ferro-maps-dev, datastore.user
- *   MIRROR_DRY_RUN              "true" plans and reports, writes nothing
- *   MIRROR_RECONCILE            "true" also lists dev ids, to clear pins the manifest lost
+ *   LIVE_CREDENTIALS_FILE   credential file for the ferro-maps-staging-v2 viewer account
+ *   DEV_CREDENTIALS_FILE    credential file for the ferro-maps-dev datastore.user account
+ *   LIVE_MIRROR_SA          optional, the exact live account email the file must impersonate
+ *   DEV_MIRROR_SA           optional, the same for dev
+ *   MIRROR_DRY_RUN          "true" plans and reports, writes nothing
+ *   MIRROR_RECONCILE        "true" also lists dev ids, to clear pins the manifest lost
  *
- * Only counts are printed. Never key material, never document contents.
+ * Only counts are printed. Never credential contents, never document contents.
  * The repo is public, so its Actions logs are public too.
  */
-import {cert, initializeApp, type App} from "firebase-admin/app";
-import {getFirestore, Timestamp, type Firestore} from "firebase-admin/firestore";
+import {readFileSync} from "node:fs";
+import {Firestore, Timestamp} from "@google-cloud/firestore";
+import {checkCredential} from "./src/credentials.ts";
 import {expireMs, pinHash, rebaseRefs} from "./src/encode.ts";
 import {
   DEFAULT_PLAN_OPTIONS,
@@ -46,21 +52,20 @@ function flag(name: string): boolean {
   return ["true", "1", "yes"].includes((process.env[name] ?? "").trim().toLowerCase());
 }
 
-function app(envName: string, project: string, name: string): App {
-  const raw = process.env[envName];
-  if (!raw || !raw.trim()) fail(`${envName} is not set`);
-  let key: {project_id?: string; client_email?: string; private_key?: string};
+/* Opens Firestore for one project from a checked credential file. */
+function firestoreFor(fileEnv: string, accountEnv: string, project: string): {db: Firestore; account: string} {
+  const path = process.env[fileEnv]?.trim();
+  if (!path) fail(`${fileEnv} is not set`);
+  let json: unknown;
   try {
-    key = JSON.parse(raw);
+    json = JSON.parse(readFileSync(path, "utf8"));
   } catch {
-    fail(`${envName} is not valid JSON`);
+    fail(`${fileEnv} is not a readable JSON file`);
   }
-  if (key.project_id !== project) fail(`${envName} belongs to another project; expected ${project}`);
-  if (!key.client_email || !key.private_key) fail(`${envName} is missing fields`);
-  return initializeApp(
-    {credential: cert({projectId: project, clientEmail: key.client_email, privateKey: key.private_key}), projectId: project},
-    name,
-  );
+  const check = checkCredential(json, project, process.env[accountEnv]);
+  if (!check.ok) fail(`${fileEnv}: ${check.reason}`);
+  const db = new Firestore({projectId: project, keyFilename: path, preferRest: true});
+  return {db, account: check.serviceAccount};
 }
 
 async function readManifest(dev: Firestore, day: string): Promise<{manifest: Manifest; found: boolean}> {
@@ -81,13 +86,10 @@ async function readManifest(dev: Firestore, day: string): Promise<{manifest: Man
 
 async function main(): Promise<void> {
   const dryRun = flag("MIRROR_DRY_RUN");
-  const liveApp = app("LIVE_FIRESTORE_READER_KEY", LIVE_PROJECT, "live-readonly");
-  const devApp = app("DEV_FIRESTORE_MIRROR_KEY", DEV_PROJECT, "dev");
-  const live = getFirestore(liveApp);
-  const dev = getFirestore(devApp);
-  live.settings({preferRest: true});
-  dev.settings({preferRest: true});
-  if (liveApp.options.projectId === devApp.options.projectId) fail("live and dev are the same project");
+  if ((LIVE_PROJECT as string) === (DEV_PROJECT as string)) fail("live and dev are the same project");
+  const {db: live, account: liveAccount} = firestoreFor("LIVE_CREDENTIALS_FILE", "LIVE_MIRROR_SA", LIVE_PROJECT);
+  const {db: dev, account: devAccount} = firestoreFor("DEV_CREDENTIALS_FILE", "DEV_MIRROR_SA", DEV_PROJECT);
+  if (liveAccount === devAccount) fail("live and dev use the same service account");
 
   const now = new Date();
   const day = quotaDay(now);

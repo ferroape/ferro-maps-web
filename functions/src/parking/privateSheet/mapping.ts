@@ -1,4 +1,5 @@
 import {createHash} from "node:crypto";
+import {isPpPlaceId} from "../contract.js";
 import {
   PAY_MODES,
   type AudCode,
@@ -36,6 +37,11 @@ export function formatCoord(value: number): string {
   return value < 0 ? `-${body}` : body;
 }
 
+/*
+ * Legacy document id: sha256(name|postcode|lat|lng).
+ * New documents use the sheet Place ID (`PP-######`). The hash is only used
+ * to find and delete those old documents.
+ */
 export function placeId(name: unknown, postcode: unknown, lat: number, lng: number): string {
   const key = [
     normaliseName(name),
@@ -46,15 +52,165 @@ export function placeId(name: unknown, postcode: unknown, lat: number, lng: numb
   return createHash("sha256").update(key).digest("hex");
 }
 
-/* Numbers and numeric strings. `UNCLEAR` and blanks are not coordinates. */
+/* `PP-000001`. Blank, Google place ids, and other text are not ids. */
+export function sheetPlaceId(value: unknown): string | null {
+  const raw = text(value).toUpperCase();
+  return isPpPlaceId(raw) ? raw : null;
+}
+
+/*
+ * Great Britain and Northern Ireland. A point outside this box is not a
+ * London parking pin, including (0,0) and a swapped lat/lng that still
+ * fails the box.
+ */
+export const UK_LAT_MIN = 49.8;
+export const UK_LAT_MAX = 60.9;
+export const UK_LNG_MIN = -8.7;
+export const UK_LNG_MAX = 1.8;
+
+export function inUk(lat: number, lng: number): boolean {
+  return lat >= UK_LAT_MIN && lat <= UK_LAT_MAX && lng >= UK_LNG_MIN && lng <= UK_LNG_MAX;
+}
+
+/* Decimal, comma-decimal, scientific, hemisphere suffix, or DMS. `UNCLEAR` is not a coordinate. */
 export function parseCoord(value: unknown): number | null {
   if (typeof value === "number" && Number.isFinite(value)) return value;
   if (typeof value !== "string") return null;
-  const s = value.trim();
-  if (!s || s.toUpperCase() === "UNCLEAR") return null;
-  if (!/^[+-]?(?:\d+\.?\d*|\.\d+)$/.test(s)) return null;
-  const n = Number(s);
-  return Number.isFinite(n) ? n : null;
+  const raw = value.trim();
+  if (!raw || raw.toUpperCase() === "UNCLEAR") return null;
+  if (/[°º]/.test(raw)) return parseDms(raw);
+  let body = raw;
+  const hemi = /([NnSsEeWw])$/.exec(body);
+  if (hemi) body = body.slice(0, -1).trim();
+  body = body.replace(/\s+/g, "");
+  if (/^[+-]?\d+,\d+$/.test(body)) body = body.replace(",", ".");
+  if (!/^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(body)) return null;
+  const n = Number(body);
+  if (!Number.isFinite(n)) return null;
+  if (!hemi) return n;
+  const pole = hemi[1].toUpperCase();
+  if (pole === "S" || pole === "W") return n > 0 ? -n : n;
+  return n < 0 ? Math.abs(n) : n;
+}
+
+function parseDms(raw: string): number | null {
+  const match = new RegExp(
+    "^\\s*([+-])?\\s*(\\d{1,3})\\s*[°º]\\s*(\\d{1,2}(?:[.,]\\d+)?)?\\s*['′]?\\s*" +
+    "(\\d{1,2}(?:[.,]\\d+)?)?\\s*(?:\"|″)?\\s*([NnSsEeWw])?\\s*$",
+  ).exec(raw);
+  if (!match) return null;
+  const degrees = Number(match[2]);
+  const minutes = match[3] ? Number(match[3].replace(",", ".")) : 0;
+  const seconds = match[4] ? Number(match[4].replace(",", ".")) : 0;
+  if (minutes >= 60 || seconds >= 60) return null;
+  let value = degrees + minutes / 60 + seconds / 3600;
+  const hemi = (match[5] || "").toUpperCase();
+  if (match[1] === "-" || hemi === "S" || hemi === "W") value = -Math.abs(value);
+  return Number.isFinite(value) ? value : null;
+}
+
+export interface LatLng {
+  lat: number;
+  lng: number;
+}
+
+/* Keep the sheet order when it is in the UK. Swap only when that is what lands in the UK. */
+export function orientUk(lat: number, lng: number): LatLng | null {
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  if (Math.abs(lat) <= 90 && Math.abs(lng) <= 180 && inUk(lat, lng)) return {lat, lng};
+  if (Math.abs(lng) <= 90 && Math.abs(lat) <= 180 && inUk(lng, lat)) return {lat: lng, lng: lat};
+  return null;
+}
+
+const PAIR = new RegExp(
+  "^\\s*([+-]?\\d+(?:[.,]\\d+)?(?:[eE][+-]?\\d+)?[NnSsEeWw]?)" +
+  "\\s*[,;/]\\s*" +
+  "([+-]?\\d+(?:[.,]\\d+)?(?:[eE][+-]?\\d+)?[NnSsEeWw]?)\\s*$",
+);
+
+/* A Google Maps URL that carries a point. Prose around the URL is ignored. */
+export function pointFromMapsUrl(value: unknown): LatLng | null {
+  if (typeof value !== "string" || !value.trim()) return null;
+  const source = value;
+  const at = /@(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)(?:\s*,\s*\d+)?/.exec(source);
+  if (at) return orientUk(Number(at[1]), Number(at[2]));
+  const packed = /!3d(-?\d+(?:\.\d+)?)!4d(-?\d+(?:\.\d+)?)/.exec(source);
+  if (packed) return orientUk(Number(packed[1]), Number(packed[2]));
+  const query = /[?&](?:q|ll|query)=(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/.exec(source);
+  if (query) return orientUk(Number(query[1]), Number(query[2]));
+  return null;
+}
+
+/* A whole cell that is `lat, lng`, or a Google Maps URL that carries a point. */
+export function pointFromText(value: unknown): LatLng | null {
+  if (typeof value !== "string" || !value.trim()) return null;
+  const source = value.trim();
+  const pair = PAIR.exec(source);
+  if (pair) {
+    const lat = parseCoord(pair[1]);
+    const lng = parseCoord(pair[2]);
+    if (lat == null || lng == null) return null;
+    return orientUk(lat, lng);
+  }
+  return pointFromMapsUrl(source);
+}
+
+export function coordinatePoint(latValue: unknown, lngValue: unknown): LatLng | null {
+  const lat = parseCoord(latValue);
+  const lng = parseCoord(lngValue);
+  if (lat != null && lng != null) return orientUk(lat, lng);
+  const latText = text(latValue);
+  const lngText = text(lngValue);
+  if (latText && !lngText) return pointFromText(latValue);
+  if (lngText && !latText) return pointFromText(lngValue);
+  return null;
+}
+
+const LAT_HEADERS = ["Latitude", "Lat"];
+const LNG_HEADERS = ["Longitude", "Lng", "Lon", "Long"];
+const COORD_TEXT_HEADERS = new Set([
+  "coordinates",
+  "coordinate",
+  "google maps link",
+  "google maps",
+  "map link",
+  "geo (as captured)",
+]);
+const MAPS_URL_HEADERS = new Set([
+  "source urls (primary first)",
+  "source url",
+  "google maps link",
+  "google maps",
+  "map link",
+]);
+
+function namedValue(values: Record<string, unknown>, names: readonly string[]): unknown {
+  const wanted = new Set(names.map((name) => name.toLowerCase()));
+  for (const [key, value] of Object.entries(values)) {
+    if (!wanted.has(key.trim().toLowerCase())) continue;
+    if (text(value) !== "") return value;
+  }
+  return undefined;
+}
+
+/*
+ * Latitude and Longitude first, including a combined `lat, lng` cell and a
+ * swapped pair. Other coordinate headers are used only when those two are empty.
+ */
+export function rowCoordinates(values: Record<string, unknown>): LatLng | null {
+  const direct = coordinatePoint(namedValue(values, LAT_HEADERS), namedValue(values, LNG_HEADERS));
+  if (direct) return direct;
+  for (const [key, value] of Object.entries(values)) {
+    const header = key.trim().toLowerCase();
+    if (COORD_TEXT_HEADERS.has(header)) {
+      const point = pointFromText(value);
+      if (point) return point;
+    } else if (MAPS_URL_HEADERS.has(header)) {
+      const point = pointFromMapsUrl(value);
+      if (point) return point;
+    }
+  }
+  return null;
 }
 
 export function mapCanPark(value: unknown): CanPark {
@@ -167,9 +323,19 @@ export function parseDate(value: unknown): string | undefined {
   return utcDate(expandYear(slash[3]), Number(slash[2]), Number(slash[1]));
 }
 
+/*
+ * Tharidu's gate. `Confirmed, details not published` is validated.
+ * Needs on-site check, No evidence, and a blank cell are not.
+ */
+const KNOWN_VERIFICATION = new Set([
+  "confirmed",
+  "corrected",
+  "confirmed, details not published",
+  "confirmed details not published",
+]);
+
 export function isKnownVerification(value: unknown): boolean {
-  const s = norm(value);
-  return s === "confirmed" || s === "corrected";
+  return KNOWN_VERIFICATION.has(norm(value));
 }
 
 export function parseMinutes(value: unknown): number | undefined {
@@ -302,6 +468,8 @@ function providerSlug(raw: string): string | undefined {
   if (s.includes("ecpparkbuddy") || s.includes("eurocarparks")) return "eurocarparks";
   if (s.includes("parkbuddy")) return "parkbuddy";
   if (s.includes("apcoa")) return "apcoa";
+  if (s === "ncp" || s.includes("nationalcarparks")) return "ncp";
+  if (s.includes("qpark")) return "qpark";
   if (s.includes("evology")) return "evology";
   return undefined;
 }
@@ -317,7 +485,20 @@ export interface LocationCode {
  * `PayByPhone location 37208` -> `{locationCode: "37208", locationProvider: "paybyphone"}`.
  * A second different code is reported and the first code is kept.
  */
-const PROVIDER_SOURCE = "pay\\s*-?\\s*by\\s*-?\\s*phone|paybyphone|ring\\s*-?\\s*go|just\\s*-?\\s*park|euro\\s*car\\s*parks|ecp\\s*parkbuddy|parkbuddy|apcoa(?:\\s+connect)?|evology";
+const PROVIDER_SOURCE = [
+  "pay\\s*-?\\s*by\\s*-?\\s*phone",
+  "paybyphone",
+  "ring\\s*-?\\s*go",
+  "just\\s*-?\\s*park",
+  "euro\\s*car\\s*parks",
+  "ecp\\s*parkbuddy",
+  "parkbuddy",
+  "apcoa(?:\\s+connect)?",
+  "national\\s+car\\s+parks",
+  "q\\s*-?\\s*park",
+  "ncp",
+  "evology",
+].join("|");
 
 export function parseLocationCode(value: unknown): LocationCode | undefined {
   if (typeof value !== "string" || !value.trim()) return undefined;
@@ -370,11 +551,7 @@ export function closureReason(value: unknown): "closed" | "temporarily_closed" |
 }
 
 export function coordinateSkip(latValue: unknown, lngValue: unknown): boolean {
-  const lat = parseCoord(latValue);
-  const lng = parseCoord(lngValue);
-  if (lat == null || lng == null) return true;
-  if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return true;
-  return lat === 0 && lng === 0;
+  return coordinatePoint(latValue, lngValue) == null;
 }
 
 /* `No` is not parkable. Conditional and Yes stay. Unknown is left for the app. */
@@ -385,9 +562,11 @@ export function isNotParkable(value: unknown): boolean {
 export function skipReason(values: Record<string, unknown>): string | null {
   const closed = closureReason(values["Location Status"]);
   if (closed) return closed;
-  if (coordinateSkip(values.Latitude, values.Longitude)) return "bad_coordinates";
+  if (!rowCoordinates(values)) return "bad_coordinates";
   if (isNotParkable(values["Can Park? (Yes/No/Conditional)"])) return "not_parkable";
   if (!text(values["Location Name"])) return "missing_name";
+  if (!isKnownVerification(values["Verification Result"])) return "unvalidated";
+  if (!sheetPlaceId(values["Place ID"])) return "missing_pp_id";
   return null;
 }
 
@@ -437,12 +616,14 @@ export function mapPayMode(value: unknown, rowId: string): PayMode | undefined {
 
 /* Map one kept sheet row onto a place. Does not set `r` or `tl`. Sets `payMode` from Ferro Pay Mode. */
 export function mapPlace(values: Record<string, unknown>, sheetRow?: number): PrivatePlace {
-  const lat = parseCoord(values.Latitude);
-  const lng = parseCoord(values.Longitude);
-  if (lat == null || lng == null) throw new Error("mapPlace called without coordinates");
+  const point = rowCoordinates(values);
+  if (!point) throw new Error("mapPlace called without coordinates");
+  const {lat, lng} = point;
+  const id = sheetPlaceId(values["Place ID"]);
+  if (!id) throw new Error("mapPlace called without a PP id");
   const name = text(values["Location Name"]);
   const place: PrivatePlace = {
-    id: placeId(name, values.Postcode, lat, lng),
+    id,
     n: name,
     p: [lat, lng],
     s: mapCanPark(values["Can Park? (Yes/No/Conditional)"]),

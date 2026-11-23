@@ -1,0 +1,836 @@
+ppId,name,operator,locationCode,parkingPence,missing
+PP-000006,Holiday Inn London – West,,,1800,operator; location code
+PP-000007,Travelodge London Park Royal,,,950,operator; location code
+PP-000008,Travelodge London Acton,,,420,operator; location code
+PP-000012,Gunnersbury Park – Main Car Park,,,100,operator; location code
+PP-000013,Gunnersbury Park – Museum Car Park,,,100,operator; location code
+PP-000014,Park Plaza London Park Royal,,,1800,operator; location code
+PP-000015,Holiday Inn Express London – Park Royal,,,1500,operator; location code
+PP-000035,Acton Health Centre,,,,operator; location code; price
+PP-000041,Premier Inn London Hanger Lane,,,1700,operator; location code
+PP-000042,Central Middlesex Hospital,APCOA,,330,location code
+PP-000045,Fairlop Station Car Park (TfL),,,500,operator; location code
+PP-000047,Hainault Station Car Park (TfL),,,500,operator; location code
+PP-000048,Leytonstone Station Car Park (TfL),,,600,operator; location code
+PP-000066,Harrow & Wealdstone Station Car Park (TfL),,,600,operator; location code
+PP-000070,Cockfosters Station Car Park (TfL),,,500,operator; location code
+PP-000071,Colindale Station Car Park (TfL),,,500,operator; location code
+PP-000079,Newbury Park Station Car Park (TfL),,,500,operator; location code
+PP-000084,Redbridge Station Car Park (TfL),,,500,operator; location code
+PP-000091,Queens House Multi-Storey (Harrow Council),,,170,operator; location code
+PP-000092,Greenhill Way Car Park (Harrow Council),,,170,operator; location code
+PP-000093,Chapel Lane Car Park (Harrow Council),,,130,operator; location code
+PP-000094,Love Lane Car Park (Harrow Council),,,130,operator; location code
+PP-000095,West House Car Park (Harrow Council),,,130,operator; location code
+PP-000096,Grimsdyke Road Car Park (Harrow Council),,,110,operator; location code
+PP-000097,Peel House Multi-Storey (Harrow Council),,,130,operator; location code
+PP-000098,Palmerston Road Car Park (Harrow Council),,,135,operator; location code
+PP-000099,Harrow Leisure Centre Car Park (Harrow Council),,,130,operator; location code
+PP-000100,Belmont Circle Car Park (Harrow Council),,,110,operator; location code
+PP-000101,Kingshill Drive Car Park (Harrow Council),,,110,operator; location code
+PP-000102,Whitchurch Playing Fields Car Park (Harrow Council),,,110,operator; location code
+PP-000103,Cambridge Road Car Park (Harrow Council),,,130,operator; location code
+PP-000104,Brigade Close Car Park (Harrow Council),,,110,operator; location code
+PP-000107,Albany Park station Car Park (Bexley Council),,,100,operator; location code
+PP-000108,Nuxley Road Car Park (Bexley Council),RingGo,25958,,price
+PP-000114,Bowling Centre Car Park (Bexley Council),,,100,operator; location code
+PP-000121,Sidcup Place Car Park (Bexley Council),,,100,operator; location code
+PP-000124,Q-Park Burlington,Q-Park,,,location code; price
+PP-000125,Q-Park Chinatown,Q-Park,,,location code; price
+PP-000126,Q-Park Covent Garden,Q-Park,,,location code; price
+PP-000127,Q-Park Harley Street,Q-Park,,,location code; price
+PP-000128,Q-Park Heathrow (Bath Road),Q-Park,,,location code; price
+PP-000129,Q-Park Knightsbridge,Q-Park,,,location code; price
+PP-000130,Q-Park Leicester Square,Q-Park,,,location code; price
+PP-000131,Q-Park Marble Arch,Q-Park,,,location code; price
+PP-000133,Q-Park Park Lane,Q-Park,,,location code; price
+PP-000134,Q-Park Pimlico,Q-Park,,,location code; price
+PP-000135,Q-Park Queensway,Q-Park,,,location code; price
+PP-000136,Q-Park Soho,Q-Park,,,location code; price
+PP-000137,Q-Park St John's Wood,Q-Park,,,location code; price
+PP-000138,Q-Park Victoria,Q-Park,,,location code; price
+PP-000139,Broadway Shopping Centre – Bexleyheath (APCOA),APCOA,,120,location code
+PP-000140,St Mark's Square – Bromley (APCOA),APCOA,,160,location code
+PP-000143,Northwick Park – Car Park 1 – Harrow (APCOA),APCOA,,990,location code
+PP-000146,Heathrow Long Stay Terminal 4 (APCOA),APCOA,,940,location code
+PP-000147,Heathrow Business Parking Terminal 5 (APCOA),APCOA,,4480,location code
+PP-000148,Heathrow Long Stay Parking Terminal 4 (APCOA),APCOA,,940,location code
+PP-000149,Heathrow Long Stay Parking Terminal 5 (APCOA),APCOA,,940,location code
+PP-000150,Heathrow Short Stay Parking 1A (APCOA),APCOA,,750,location code
+PP-000151,Heathrow MSCP3 Short Stay Car Park (APCOA),APCOA,,750,location code
+PP-000153,Heathrow Short Stay Terminal 5 (APCOA),APCOA,,750,location code
+PP-000154,Hilton Hotel Heathrow Terminal 4 (APCOA),APCOA,,800,location code
+PP-000155,Bellingham Leisure Centre (APCOA),APCOA,,130,location code
+PP-000156,Lewisham Shopping Centre (APCOA),APCOA,,170,location code
+PP-000157,The O2 Centre Finchley Road (APCOA),APCOA,,350,location code
+PP-000158,South Bank (APCOA),APCOA,,700,location code
+PP-000159,Wandsworth Southside 1 (APCOA),APCOA,,250,location code
+PP-000160,Wandsworth Southside 2 (APCOA),APCOA,,250,location code
+PP-000161,Ealing Hospital (APCOA),APCOA,,330,location code
+PP-000171,Homefield Rise Orpington Car Park (Bromley Council),,,160,operator; location code
+PP-000176,Mitre Close Bromley Town Centre Car Park (Bromley Council),,,170,operator; location code
+PP-000177,"Palace Grove Car Park, Bromley (Bromley Council)",,,170,operator; location code
+PP-000182,"Spa Leisure Centre Car Park, Beckenham (Bromley Council)",,,160,operator; location code
+PP-000185,"Stockwell Close Multi-Storey, Bromley (Bromley Council)",,,150,operator; location code
+PP-000192,Baynard House Car Park (City of London Corporation),,,580,operator; location code
+PP-000193,London Wall Car Park (City of London Corporation),,,580,operator; location code
+PP-000194,Minories Car Park (City of London Corporation),,,580,operator; location code
+PP-000195,Tower Hill Car and Coach Park (City of London Corporation),,,580,operator; location code
+PP-000196,Smithfield Car Park (City of London Corporation),,,580,operator; location code
+PP-000197,Holland Park Car Park (Kensington & Chelsea Council),,,,operator; location code; price
+PP-000199,East Croydon surface Car Park (Croydon Council),RingGo,16401,,price
+PP-000200,Factory Lane Car Park (Croydon Council),RingGo,16402,,price
+PP-000201,Fairfield Hall Car Park (Croydon Council),,,183,operator; location code
+PP-000204,Jubilee Bridge Car Park (Croydon Council),RingGo,16411,,price
+PP-000207,New Addington Central Parade Car Park (Croydon Council),RingGo,16407,,price
+PP-000210,Reedham Station Car Park (Croydon Council),RingGo,16405,,price
+PP-000213,Spice's Yard Car Park (Croydon Council),RingGo,16420,,price
+PP-000218,Bunns Lane Car Park (Barnet Council),,,169,operator; location code
+PP-000219,Burroughs Gardens Car Park (Barnet Council),,,169,operator; location code
+PP-000220,Castle Road Car Park (Barnet Council),,,110,operator; location code
+PP-000222,Daws Lane Car Park (Barnet Council),,,,operator; location code; price
+PP-000223,East Barnet Road (North) Car Park (Barnet Council),,,83,operator; location code
+PP-000224,East Barnet Road (South) Car Park (Barnet Council),,,83,operator; location code
+PP-000225,Fitzjohn Avenue Car Park (Barnet Council),,,127,operator; location code
+PP-000226,Hendon Park Car Park (Barnet Council),,,150,operator; location code
+PP-000228,Lodge Lane Car Park (Barnet Council),,,110,operator; location code
+PP-000229,Moxon Street Car Park (Barnet Council),,,338,operator; location code
+PP-000230,Old Courthouse Recreation Ground Car Park (Barnet Council),,,140,operator; location code
+PP-000234,Stanhope Road (Main) Car Park (Barnet Council),,,110,operator; location code
+PP-000236,Stanhope Road (Top) Car Park (Barnet Council),,,110,operator; location code
+PP-000237,Stapylton Road Car Park (Barnet Council),,,83,operator; location code
+PP-000240,West Hendon Playing Fields Car Park (Barnet Council),,,,operator; location code; price
+PP-000242,Woodhouse Road Car Park (Barnet Council),,,110,operator; location code
+PP-000246,Lonsdale Avenue Car Park (Brent Council),,,100,operator; location code
+PP-000247,Neasden Car Park (Brent Council),,,100,operator; location code
+PP-000249,Preston Road Car Park (Brent Council),,,100,operator; location code
+PP-000250,Salusbury Road Car Park (Brent Council),,,100,operator; location code
+PP-000251,St John's Road Car Park (Brent Council),,,100,operator; location code
+PP-000253,Brent Civic Centre Car Park (Brent Council),,,300,operator; location code
+PP-000254,Barbican Centre Car Park (Saba),,,800,operator; location code
+PP-000255,Kensington High Street Car Park – Hornton Street (Saba),,,490,operator; location code
+PP-000256,Barking Community Hospital (Saba),,,1500,operator; location code
+PP-000258,St Helier Hospital & Queen Mary's Hospital for Children Car Park (Saba),,,350,operator; location code
+PP-000259,Sutton Hospital Car Park (Saba),,,350,operator; location code
+PP-000260,Britannia Waterloo (Britannia Parking),,,,operator; location code; price
+PP-000261,Britannia Battersea Nine Elms Waitrose (Britannia Parking),,,,operator; location code; price
+PP-000276,Brentford Station – Station Road,,,710,operator; location code
+PP-000286,Beckenham Junction Station – Beckenham Junction Station - A,,,760,operator; location code
+PP-000287,Beckenham Junction Station – Beckenham Junction Station - B,,,760,operator; location code
+PP-000289,Bickley Station – Station Car Park,APCOA,,630,location code
+PP-000294,Barnehurst Station – Station Approach,APCOA,,780,location code
+PP-000295,Barnehurst Station – Station Car Park,APCOA,,710,location code
+PP-000304,Bexleyheath Station – Station Car Park,APCOA,,770,location code
+PP-000305,Bexley Station – Station Car Park,APCOA,,720,location code
+PP-000319,Chelsfield Station – Station Car Park,APCOA,,,location code; price
+PP-000328,Crayford Station – Station Car Park,APCOA,,700,location code
+PP-000335,Little Park Gardens Car Park (Enfield Council),,,160,operator; location code
+PP-000336,Church Lane Car Park (Enfield Council),,,160,operator; location code
+PP-000337,New River Loop Car Park (Enfield Council),,,160,operator; location code
+PP-000338,Sydney Road (Small) Car Park (Enfield Council),,,160,operator; location code
+PP-000339,Genotin Road Car Park (Enfield Council),,,160,operator; location code
+PP-000340,Lion Road Car Park (Enfield Council),,,160,operator; location code
+PP-000341,Eagle House Car Park (Enfield Council),,,160,operator; location code
+PP-000342,Raynham Road Car Park (Enfield Council),,,160,operator; location code
+PP-000343,Lodge Drive Car Park (Enfield Council),,,160,operator; location code
+PP-000344,Minchenden Car Park (Enfield Council),,,160,operator; location code
+PP-000345,Fords Grove Car Park (Enfield Council),,,160,operator; location code
+PP-000368,Elmers End Station – Station Car Park,APCOA,,690,location code
+PP-000369,Eltham Station – Station Car Park,APCOA,,700,location code
+PP-000377,Brunswick Road Car Park (Haringey Council),RingGo,34529,,price
+PP-000378,Bury Road multi-storey (Wood Green) Car Park (Haringey Council),RingGo,34532,,price
+PP-000379,Crouch Hall Road Car Park (Haringey Council),RingGo,34523,,price
+PP-000380,Garman Road Car Park (Haringey Council),RingGo,34538,,price
+PP-000381,Lawrence Road Car Park (Haringey Council),RingGo,34524,,price
+PP-000382,Somerset Road Car Park (Haringey Council),RingGo,34531,,price
+PP-000383,"Stoneleigh Road (car parks A, B, C) Car Park (Haringey Council)",RingGo,34525,,price
+PP-000384,Summerland Gardens Car Park (Haringey Council),RingGo,34530,,price
+PP-000385,Westerfield Road Car Park (Haringey Council),RingGo,34527,,price
+PP-000386,Sobell Leisure Centre Car Park (Islington Council),,,,operator; location code; price
+PP-000387,"RSPCA Harmsworth Animal Hospital Car Park (Sonderburg Road, Islington Council)",,,,operator; location code; price
+PP-000389,Bentley Road Car Park (Hackney Council),,,270,operator; location code
+PP-000390,Hackney Marshes Centre Car Park (Hackney Council),,,270,operator; location code
+PP-000391,Hackney Marshes Pavilion Car Park (Hackney Council),,,,operator; location code; price
+PP-000392,Haggerston Park Car Park (Hackney Council),,,270,operator; location code
+PP-000393,Mabley Green Car Park (Hackney Council),,,270,operator; location code
+PP-000394,Spring Hill Recreation Ground Car Park (Hackney Council),,,270,operator; location code
+PP-000395,West Reservoir Centre Car Park (Hackney Council),,,270,operator; location code
+PP-000396,Wilmer Place Car Park (Hackney Council),,,270,operator; location code
+PP-000426,Hendon Station – Station Car Park,APCOA,,1040,location code
+PP-000435,Hackney Central Station - Amhurst Road,,,260,operator; location code
+PP-000445,Hounslow Station – Station Car Park,,,880,operator; location code
+PP-000452,Bedford Road Car Park (Waltham Forest Council),,,190,operator; location code
+PP-000453,Brandon Road Car Park (Waltham Forest Council),,,190,operator; location code
+PP-000454,Stanley Road Car Park (Waltham Forest Council),,,190,operator; location code
+PP-000455,High Street Car Park (Waltham Forest Council),,,190,operator; location code
+PP-000456,Mission Grove Car Park (Waltham Forest Council),,,190,operator; location code
+PP-000457,Hall Lane Car Park (Waltham Forest Council),,,190,operator; location code
+PP-000458,Richmond Road Car Park (Waltham Forest Council),,,190,operator; location code
+PP-000459,Linford Road Car Park (Waltham Forest Council),,,190,operator; location code
+PP-000460,Church Lane Car Park (Waltham Forest Council),,,190,operator; location code
+PP-000461,Town Hall Car Park (Waltham Forest Council),,,430,operator; location code
+PP-000462,Willow House Car Park (Waltham Forest Council),,,430,operator; location code
+PP-000464,Court Way Car Park (Redbridge Council),,,220,operator; location code
+PP-000465,Station Road (Chadwell Heath) Car Park (Redbridge Council),,,220,operator; location code
+PP-000466,Wangey Road Car Park (Redbridge Council),,,220,operator; location code
+PP-000468,Goodmayes Road Car Park (Redbridge Council),,,220,operator; location code
+PP-000470,Mildmay Road Car Park (Redbridge Council),,,220,operator; location code
+PP-000471,High Road Seven Kings Car Park (Redbridge Council),,,220,operator; location code
+PP-000472,Derby Road Car Park (Redbridge Council),,,220,operator; location code
+PP-000473,"Eastwood Close (Car Park 7, RingGo 7105) Car Park (Redbridge Council)",,,220,operator; location code
+PP-000474,"Eastwood Close (Car Park 8, RingGo 7116) Car Park (Redbridge Council)",,,220,operator; location code
+PP-000475,Primrose Road (George Lane Viaduct) Car Park (Redbridge Council),,,220,operator; location code
+PP-000476,Mulberry Way Car Park (Redbridge Council),,,220,operator; location code
+PP-000477,High Road South Woodford Car Park (Redbridge Council),,,220,operator; location code
+PP-000478,Grove Park (Wanstead) Car Park (Redbridge Council),,,220,operator; location code
+PP-000481,London Soho Brewer St (NCP),NCP,,1500,location code
+PP-000482,London Saffron Hill (NCP),NCP,,800,location code
+PP-000483,London Vintry Thames Exchange (NCP),NCP,,500,location code
+PP-000484,London Marylebone Road (NCP),NCP,,1000,location code
+PP-000485,London Finsbury Square (NCP),NCP,,1000,location code
+PP-000486,London Finsbury Forecourt (NCP),NCP,,1287,location code
+PP-000487,London Whitechapel High St (NCP),NCP,,650,location code
+PP-000488,London Bloomsbury Square (NCP),NCP,,800,location code
+PP-000489,London Thomas More Square (NCP),NCP,,,location code; price
+PP-000490,Southwark Glasshill Street (NCP),NCP,,500,location code
+PP-000491,London Richmond Station (NCP),NCP,,400,location code
+PP-000492,Kingston Fairfield (NCP),NCP,,250,location code
+PP-000493,Kingston Lady Booth Road (NCP),NCP,,645,location code
+PP-000494,Bromley The Mall (NCP),NCP,,150,location code
+PP-000495,Rainham Station (C2C) (NCP),NCP,,900,location code
+PP-000509,Oaklands Gate Car Park (Hillingdon Council),,,100,operator; location code
+PP-000510,Green Lane Car Park (Hillingdon Council),,,100,operator; location code
+PP-000511,North View Car Park (Hillingdon Council),,,100,operator; location code
+PP-000512,Devon Parade Car Park (Hillingdon Council),,,100,operator; location code
+PP-000513,Devonshire Lodge Car Park (Hillingdon Council),,,100,operator; location code
+PP-000514,St. Martins Approach Car Park (Hillingdon Council),,,100,operator; location code
+PP-000515,Long Drive Car Park (Hillingdon Council),,,100,operator; location code
+PP-000516,Long Lane Car Park (Hillingdon Council),,,100,operator; location code
+PP-000517,Fairfield Road Car Park (Hillingdon Council),,,100,operator; location code
+PP-000518,Linden Avenue Car Park (Hillingdon Council),,,100,operator; location code
+PP-000519,Community Close Car Park (Hillingdon Council),,,100,operator; location code
+PP-000520,Pump Lane Car Park (Hillingdon Council),,,100,operator; location code
+PP-000521,Brandville Road Car Park (Hillingdon Council),,,100,operator; location code
+PP-000522,Grainges Car Park (Hillingdon Council),,,,operator; location code; price
+PP-000523,Cedars Car Park (Hillingdon Council),,,,operator; location code; price
+PP-000524,Civic Centre Car Park (Hillingdon Council),,,,operator; location code; price
+PP-000525,Blyth Road Car Park (Hillingdon Council),,,100,operator; location code
+PP-000526,Kingsend North Car Park (Hillingdon Council),,,130,operator; location code
+PP-000528,Rockingham Rec Car Park (Hillingdon Council),,,100,operator; location code
+PP-000529,Grainges Yard Car Park (Hillingdon Council),,,120,operator; location code
+PP-000530,Kingsend South (long stay) Car Park (Hillingdon Council),,,120,operator; location code
+PP-000531,Sidmouth Drive Car Park (Hillingdon Council),,,100,operator; location code
+PP-000532,Pembroke Gardens Car Park (Hillingdon Council),,,100,operator; location code
+PP-000533,Harefield House Car Park (Hillingdon Council),,,100,operator; location code
+PP-000534,Hillingdon Sports & Leisure Centre Car Park (Hillingdon Council),,,100,operator; location code
+PP-000535,Botwell Sports & Leisure Complex Car Park (Hillingdon Council),,,100,operator; location code
+PP-000536,Highgrove Pool & Fitness Centre Car Park (Hillingdon Council),,,100,operator; location code
+PP-000537,Ruislip Lido Main Car Park (Hillingdon Council),,,,operator; location code; price
+PP-000538,Willow Lawn Car Park (Hillingdon Council),,,,operator; location code; price
+PP-000539,Platinum Jubilee Leisure Centre Car Park (Hillingdon Council),,,100,operator; location code
+PP-000540,Ashdown Car Park (Kingston Council),,,330,operator; location code
+PP-000541,Bittoms Car Park (Kingston Council),,,270,operator; location code
+PP-000542,Blagdon Road Car Park (Kingston Council),,,100,operator; location code
+PP-000543,Canbury Place Car Park (Kingston Council),,,270,operator; location code
+PP-000544,Cattle Market - surface Car Park (Kingston Council),,,330,operator; location code
+PP-000545,Guildhall - Saturdays only Car Park (Kingston Council),,,270,operator; location code
+PP-000546,Hook Community Centre Car Park (Kingston Council),,,140,operator; location code
+PP-000547,Malden Centre Car Park (Kingston Council),,,210,operator; location code
+PP-000548,Neville House Car Park (Kingston Council),,,330,operator; location code
+PP-000549,Rose Car Park (Kingston Council),,,270,operator; location code
+PP-000550,St Philips Road Car Park (Kingston Council),,,160,operator; location code
+PP-000551,Thameside Car Park (Kingston Council),,,270,operator; location code
+PP-000552,Rocks Lane Car Park (Richmond Council),,,295,operator; location code
+PP-000558,Taylor Close Car Park (Richmond Council),,,50,operator; location code
+PP-000559,Bennet Close Car Park (Richmond Council),,,295,operator; location code
+PP-000560,Old Bridge Street Car Park (Richmond Council),,,110,operator; location code
+PP-000561,Kew Station Forecourt Car Park (Richmond Council),,,50,operator; location code
+PP-000562,Friars Lane Car Park (Richmond Council),,,190,operator; location code
+PP-000563,Old Deer Park Car Park (Richmond Council),,,150,operator; location code
+PP-000564,Old Deer Park Extension Car Park (Richmond Council),,,150,operator; location code
+PP-000565,Paradise Road Multi-Storey Car Park (Richmond Council),,,355,operator; location code
+PP-000566,Pools on the Park Car Park (Richmond Council),,,125,operator; location code
+PP-000568,Sheen Lane Centre Car Park (Richmond Council),,,100,operator; location code
+PP-000569,Cedar Road Car Park (Richmond Council),,,100,operator; location code
+PP-000570,North Lane (West) Car Park (Richmond Council),,,100,operator; location code
+PP-000571,Teddington Pool Car Park (Richmond Council),,,100,operator; location code
+PP-000572,Arragon Road multi-storey Car Park (Richmond Council),,,,operator; location code; price
+PP-000573,Church Lane Car Park (Richmond Council),,,105,operator; location code
+PP-000574,Holly Road Car Park (Richmond Council),,,105,operator; location code
+PP-000575,York House Car Park (Richmond Council),,,105,operator; location code
+PP-000576,Nelson Road Car Park (Richmond Council),,,55,operator; location code
+PP-000578,Scrubs Lane Car Park (H&F Council),,,110,operator; location code
+PP-000579,Hurlingham Park Car Park (H&F Council),,,220,operator; location code
+PP-000580,Coomer Place Stop & Shop Car Park (H&F Council),,,,operator; location code; price
+PP-000582,Boston Manor Car Park (Hounslow Council),,,120,operator; location code
+PP-000583,Brentford Fountain Leisure Centre Car Park (Hounslow Council),,,120,operator; location code
+PP-000584,Chiswick Common Road Car Park (Hounslow Council),,,120,operator; location code
+PP-000585,Chiswick House and Gardens Car Park (Hounslow Council),,,120,operator; location code
+PP-000586,Chiswick Town Hall Car Park (Hounslow Council),,,120,operator; location code
+PP-000587,Welstead Way Car Park (Hounslow Council),,,120,operator; location code
+PP-000588,Bethany Waye Car Park (Hounslow Council),,,120,operator; location code
+PP-000589,Bridge House Car Park (Hounslow Council),,,120,operator; location code
+PP-000590,Hanworth Leisure Centre and Library Car Park (Hounslow Council),,,120,operator; location code
+PP-000591,Bell Road Car Park (Hounslow Council),,,120,operator; location code
+PP-000592,Kingsley Road Car Park (Hounslow Council),,,120,operator; location code
+PP-000593,Inwood Road Car Park (Hounslow Council),,,120,operator; location code
+PP-000594,Montague Road East Car Park (Hounslow Council),,,120,operator; location code
+PP-000595,Montague Road West Car Park (Hounslow Council),,,120,operator; location code
+PP-000596,Prince Regent Road South Car Park (Hounslow Council),,,120,operator; location code
+PP-000597,Heston Village Leisure Centre Car Park (Hounslow Council),,,120,operator; location code
+PP-000598,Wisdom Court Car Park (Hounslow Council),,,120,operator; location code
+PP-000599,Redlees Park Car Park (Hounslow Council),,,120,operator; location code
+PP-000600,Isleworth Leisure Centre and Library Car Park (Hounslow Council),,,120,operator; location code
+PP-000601,Osterley Sports and Athletics Centre Car Park (Hounslow Council),,,120,operator; location code
+PP-000610,Isleworth Station – Station Car Park,,,550,operator; location code
+PP-000621,Kensington Olympia Station – Olympia,NCP,,6200,location code
+PP-000630,Blackheath - Old Dover Road Car Park,,,310,operator; location code
+PP-000631,Charlton - Charlton Village Car Park,,,100,operator; location code
+PP-000632,Eltham - Orangery Lane Car Park,,,310,operator; location code
+PP-000633,Eltham Centre Car Park,,,310,operator; location code
+PP-000634,Greenwich - Burney Street Car Park,,,830,operator; location code
+PP-000635,Greenwich - Cutty Sark Gardens Car Park,,,830,operator; location code
+PP-000636,Greenwich - Park Row Car Park,,,830,operator; location code
+PP-000637,Woolwich - Calderwood Street Car Park,,,310,operator; location code
+PP-000638,Woolwich - Monk Street Car Park,,,310,operator; location code
+PP-000639,Woolwich - Powis Street Car Park,,,310,operator; location code
+PP-000640,Madge Gill Way Car Park,,,,operator; location code; price
+PP-000641,Stratford Multi-Storey Car Park,,,,operator; location code; price
+PP-000642,Shaftesbury Road Car Park,,,,operator; location code; price
+PP-000644,Queen's Market Car Park,,,,operator; location code; price
+PP-000645,Stratford Town Hall Car Park,,,,operator; location code; price
+PP-000647,Market Place Car Park,,,,operator; location code; price
+PP-000659,Mitcham Junction Station – Station Car Park,APCOA,,580,location code
+PP-000660,Mill Hill Broadway Station – Station Car Park,APCOA,,1110,location code
+PP-000668,Mottingham Station – Station Car Park,APCOA,,720,location code
+PP-000670,Mortlake Station – Station Car Park,,,880,operator; location code
+PP-000674,New Barnet Station – Station Car Park,APCOA,,750,location code
+PP-000781,Norbiton Station – Station Car Park,,,1100,operator; location code
+PP-000783,New Eltham Station – Station Car Park,APCOA,,750,location code
+PP-000788,New Southgate Station – Station Car Park,APCOA,,470,location code
+PP-000797,Orpington Station – Station Car Park,APCOA,,810,location code
+PP-000798,London Paddington Station – Paddington Station Car Park off of Platform 1,APCOA,,515,location code
+PP-000799,London Paddington Station – Station Car Park,,,515,operator; location code
+PP-000804,Angel Way Car Park,,,260,operator; location code
+PP-000805,Appleton Way Car Park,,,260,operator; location code
+PP-000806,Balgores Square Car Park,,,260,operator; location code
+PP-000807,Billet Lane Car Park,,,260,operator; location code
+PP-000808,Cherry Tree Lane Car Park,,,260,operator; location code
+PP-000809,Como Street Car Park,,,260,operator; location code
+PP-000810,Corbets Tey Road (Hoppy Hall) Car Park,,,260,operator; location code
+PP-000811,Dorrington Gardens Car Park,,,260,operator; location code
+PP-000812,St Nicholas Avenue East Car Park (Elm Park Library),,,260,operator; location code
+PP-000813,Fentiman Way Car Park,,,260,operator; location code
+PP-000814,Front Lane Car Park,,,260,operator; location code
+PP-000815,Market Place Car Park (Romford),,,250,operator; location code
+PP-000816,Oldchurch Rise Car Park,,,260,operator; location code
+PP-000817,Rex Close Car Park,,,260,operator; location code
+PP-000818,Slaney Road Car Park,,,260,operator; location code
+PP-000819,Town Hall Car Park,,,260,operator; location code
+PP-000820,Viking Way (Tesco) Car Park,,,260,operator; location code
+PP-000821,Wilson Close (Gaynes Road) Car Park,,,260,operator; location code
+PP-000822,Woodhall Crescent Car Park,,,260,operator; location code
+PP-000848,Rainham (Essex) Station - Station Car Park,,,630,operator; location code
+PP-000855,Beckenham Place Park Car Park,,,,operator; location code
+PP-000856,Blackheath Grove Car Park,,,,operator; location code
+PP-000857,Canadian Avenue Car Park,,,,operator; location code; price
+PP-000858,Clarendon Rise / Albion Way Car Park,,,,operator; location code
+PP-000859,Girton Road Car Park,,,,operator; location code
+PP-000860,Holbeach Road Car Park,,,174,operator; location code
+PP-000861,Molesworth Street Car Park,,,,operator; location code
+PP-000862,Pearcefield Avenue Car Park,,,,operator; location code
+PP-000863,Perry Vale Car Park,,,,operator; location code
+PP-000864,Slaithwaite Road Car Park,,,,operator; location code
+PP-000865,Thomas Lane Car Park,,,,operator; location code
+PP-000866,Vanguard Street Car Park,,,,operator; location code
+PP-000867,"Popes Road Car Park, Brixton (Lambeth Council)",,,568,operator; location code
+PP-000868,"Leigham Court Road Car Park, Streatham (Lambeth Council)",,,72,operator; location code
+PP-000869,"Waylett Place Car Park, Norwood (Lambeth Council)",,,72,operator; location code
+PP-000870,Choumert Grove Car Park (Southwark Council),,,280,operator; location code
+PP-000871,Peckham Town Centre Car Park (Southwark Council),,,280,operator; location code
+PP-000872,Battersea Park Car Parks (Wandsworth Council),,,,operator; location code; price
+PP-000873,"Wandle Recreation Centre Car Park, King George's Park (Wandsworth Council)",,,340,operator; location code
+PP-000874,"Burr Road Car Park, King George's Park (Wandsworth Council)",,,340,operator; location code
+PP-000883,Slade Green Station – Station Car Park,APCOA,,440,location code
+PP-000884,Sidcup Station – Station Car Park,APCOA,,690,location code
+PP-000902,John Orwell Car Park,,,480,operator; location code
+PP-000903,Haverfield Road Car Park,,,480,operator; location code
+PP-000904,Victoria Park Car Park,,,480,operator; location code
+PP-000905,St Marks Gate Car Park,,,480,operator; location code
+PP-000907,Lawton Road Car Park,,,480,operator; location code
+PP-000908,Roman Road Car Park,,,580,operator; location code
+PP-000909,Axe Street Service Road Car Park,,,,operator; location code; price
+PP-000910,Barking Park Western Car Park,,,,operator; location code; price
+PP-000911,Bobby Moore Way Car Park,,,,operator; location code; price
+PP-000912,Heathway Multi-Storey Car Park,,,,operator; location code; price
+PP-000914,Wantz Road Car Park,,,,operator; location code; price
+PP-000915,London Road Multi-Storey Car Park,,,100,operator; location code
+PP-000916,"Sibthorpe Road Car Park, Mitcham (Merton Council)",,,580,operator; location code
+PP-000917,"Tamworth Recreation Ground Car Park, Mitcham (Merton Council)",,,120,operator; location code
+PP-000918,"Abbey Recreation Ground Car Park, Morden (Merton Council)",,,120,operator; location code
+PP-000919,"Kenley Road Car Park, Morden (Merton Council)",,,,operator; location code; price
+PP-000920,"Morden Park Car Park, Morden (Merton Council)",,,,operator; location code; price
+PP-000921,"Peel House Lower Level Car Park, Morden (Merton Council)",,,70,operator; location code
+PP-000922,"York Close Car Park, Morden (Merton Council)",,,,operator; location code; price
+PP-000923,"Coombe Lane Car Park, Raynes Park (Merton Council)",,,,operator; location code; price
+PP-000924,"The Broadway Car Park, Wimbledon (Merton Council)",,,,operator; location code; price
+PP-000925,"Haydons Road Recreation Ground Car Park, Wimbledon (Merton Council)",,,120,operator; location code
+PP-000926,"Hartfield Road Car Park, Wimbledon (Merton Council)",,,,operator; location code; price
+PP-000927,"Queens Road Car Park, Wimbledon (Merton Council)",,,90,operator; location code
+PP-000928,"Wimbledon Park (Revelstoke Road) Car Park, Wimbledon (Merton Council)",,,120,operator; location code
+PP-000933,Shortlands Station – Station Car Park,APCOA,,680,location code
+PP-000937,London St Pancras International Station - Saba Car Park,,,1000,operator; location code
+PP-000944,Surbiton Station – Station Car Park,,,1600,operator; location code
+PP-000954,Teddington Station – Teddington Car Park,,,130,operator; location code
+PP-000955,Cheam Library Car Park (Sutton Council),,,160,operator; location code
+PP-000956,"Melbourne Road Car Park, Wallington (Sutton Council)",,,160,operator; location code
+PP-000957,"Shotfield Car Park, Wallington (Sutton Council)",,,160,operator; location code
+PP-000958,Wallington Public Hall Car Park (Sutton Council),,,160,operator; location code
+PP-000959,Carshalton High Street Car Park (Sutton Council),,,160,operator; location code
+PP-000960,"The Square Car Park, Carshalton (Sutton Council)",,,160,operator; location code
+PP-000961,Wallington Library Car Park (Sutton Council),,,160,operator; location code
+PP-000962,"Kingsway Road Car Park, Cheam (Sutton Council)",,,160,operator; location code
+PP-000963,"Stone Place Car Park, Worcester Park (Sutton Council)",,,520,operator; location code
+PP-000964,Gibson Road Multi-Storey Car Park (Sutton Council),,,310,operator; location code
+PP-000965,Times Square Multi-Storey Car Park (Sutton Council),,,310,operator; location code
+PP-000966,Teddington Station – via Station Road,,,760,operator; location code
+PP-000975,Upminster Station - Station Car Park,,,100,operator; location code
+PP-000976,London Victoria Station – Station Car Park,,,900,operator; location code
+PP-000977,London Victoria Station – Victoria Station Car Park,APCOA,,900,location code
+PP-000980,London Waterloo Station – Station Approach Road,APCOA,,920,location code
+PP-000981,London Waterloo Station – Station Car Park,,,920,operator; location code
+PP-000984,Westcombe Park Station – Station Car Park,APCOA,,650,location code
+PP-000985,Westcombe Park Station – via Station Crescent,APCOA,,720,location code
+PP-000986,Westcombe Park Station – via Westcombe Hill,APCOA,,720,location code
+PP-001005,Welling Station – Station Car Park,APCOA,,700,location code
+PP-001014,West Ruislip Station – Station Car Park,,,840,operator; location code
+PP-001019,Woolwich Arsenal Station – Station Car Park,APCOA,,770,location code
+PP-001022,West Wickham Station – Station Car Park,APCOA,,520,location code
+PP-001027,"Westfield London – Car Parks A, B & C",,,300,operator; location code
+PP-001028,"Westfield Stratford City – Car Parks A, B & C",,,300,operator; location code
+PP-001030,Kings Mall Car Park,,,300,operator; location code
+PP-001031,The Bentall Centre – Car Parks A & B,,,300,operator; location code
+PP-001032,The Liberty Shopping Centre Car Park,,,240,operator; location code
+PP-001035,Exchange Ilford Car Park,,,200,operator; location code
+PP-001038,The O2 – Car Park 1 (event parking),,,2939,operator; location code
+PP-001039,"The O2 – Car Parks 2, 3 & 4 (non-event / outlet shopping)",,,700,operator; location code
+PP-001044,Premier Inn London Archway,,,1500,operator; location code
+PP-001045,Premier Inn London Barking,,,1050,operator; location code
+PP-001046,Premier Inn London Beckton,,,1600,operator; location code
+PP-001047,Premier Inn London Brentford,,,1500,operator; location code
+PP-001049,Premier Inn London Chiswick,,,1900,operator; location code
+PP-001052,Premier Inn London Dagenham,,,1050,operator; location code
+PP-001053,Premier Inn London Docklands (Excel),,,,operator; location code; price
+PP-001055,Premier Inn London Edgware,,,1800,operator; location code
+PP-001056,Premier Inn London Eltham,,,1200,operator; location code
+PP-001059,Premier Inn London Hampstead,,,2500,operator; location code
+PP-001060,Premier Inn London Harrow,,,940,operator; location code
+PP-001061,"Premier Inn London Hayes, Heathrow (Hyde Park)",,,890,operator; location code
+PP-001062,"Premier Inn London Hayes, Heathrow (North A4020)",,,890,operator; location code
+PP-001063,The Mall Wood Green – East Car Park,,,300,operator; location code
+PP-001064,The Mall Wood Green – West Car Park,,,300,operator; location code
+PP-001065,17&Central (The Mall Walthamstow) Car Park,,,280,operator; location code
+PP-001069,Premier Inn London Heathrow Airport (M4/J4),,,1350,operator; location code
+PP-001070,Premier Inn London Heathrow Airport T2 & T3 (Bath Road),,,2400,operator; location code
+PP-001071,Premier Inn London Heathrow Airport Terminal 5,,,2500,operator; location code
+PP-001072,Premier Inn London Hendon (The Hyde),,,1200,operator; location code
+PP-001073,Premier Inn London Ilford (Newbury Park),,,1500,operator; location code
+PP-001074,Premier Inn London Kew Bridge,,,1500,operator; location code
+PP-001077,Premier Inn London Richmond,,,2400,operator; location code
+PP-001083,Premier Inn London Southwark (Bankside),,,1500,operator; location code
+PP-001084,Premier Inn London Tolworth,,,1300,operator; location code
+PP-001085,Premier Inn London Tower Bridge,,,3100,operator; location code
+PP-001090,The Chimes Uxbridge Car Park,,,260,operator; location code
+PP-001091,Wimbledon Quarter (formerly Centre Court) Car Park,,,290,operator; location code
+PP-001092,The Brewery Romford Car Park (multi-storey & surface),,,,operator; location code; price
+PP-001093,St Anns Shopping Centre Car Park,,,250,operator; location code
+PP-001254,Asda Walthamstow Supermarket – customer car park,,,,operator; location code; price
+PP-001259,Asda Clapham Junction Superstore – customer car park,,,,operator; location code; price
+PP-001276,Asda Romford – customer car park,,,,operator; location code; price
+PP-001282,Morrisons Palmers Green – customer car park,,,75,operator; location code
+PP-001284,Morrisons Chingford – customer car park,,,270,operator; location code
+PP-001289,Morrisons Stratford – customer car park,,,650,operator; location code
+PP-001291,Morrisons Peckham – customer car park,,,200,operator; location code
+PP-001292,Morrisons Stamford Hill – customer car park,,,330,operator; location code
+PP-001293,Morrisons Harrow – customer car park,,,220,operator; location code
+PP-001295,Morrisons Welling – customer car park,,,420,operator; location code
+PP-001296,Morrisons Holloway – customer car park,,,370,operator; location code
+PP-001297,Morrisons Petts Wood – customer car park,,,75,operator; location code
+PP-001313,Q-Park Eden Walk (Eden Walk Shopping Centre),Q-Park,,,location code; price
+PP-001314,The Mercury Mall Car Park,,,,operator; location code; price
+PP-001315,The Walnuts Shopping Centre Car Park,,,100,operator; location code
+PP-001317,Palace Exchange Car Park (Lidl),,,,operator; location code; price
+PP-001319,Canary Wharf – Canada Square Car Park,,,550,operator; location code
+PP-001320,Canary Wharf – Cabot Square Car Park,,,550,operator; location code
+PP-001321,Canary Wharf – Jubilee Place Car Park,,,550,operator; location code
+PP-001322,Canary Wharf – Westferry Circus Car Park,,,550,operator; location code
+PP-001323,St George's Harrow Car Park,,,270,operator; location code
+PP-001324,Travelodge London Central Kings Cross Royal Scot,,,2400,operator; location code
+PP-001325,Travelodge London City Airport,,,980,operator; location code
+PP-001329,Travelodge London Battersea,,,1150,operator; location code
+PP-001330,Travelodge London Ilford Gants Hill,,,500,operator; location code
+PP-001331,Travelodge London Kew Bridge,,,1100,operator; location code
+PP-001337,Travelodge London Cricklewood,,,1000,operator; location code
+PP-001338,Travelodge London Teddington,,,600,operator; location code
+PP-001340,Travelodge London Excel,,,1200,operator; location code
+PP-001341,Travelodge London Woolwich,,,200,operator; location code
+PP-001349,Travelodge London Beckton,,,700,operator; location code
+PP-001351,Travelodge London Docklands Central,,,1300,operator; location code
+PP-001357,Angel Central Car Park (formerly N1 Centre),,,500,operator; location code
+PP-001521,The Centre Feltham – Multi Storey Car Park,,,120,operator; location code
+PP-001522,The Centre Feltham – Surface Car Park,,,120,operator; location code
+PP-001524,Holiday Inn London - Brent Cross,,,1200,operator; location code
+PP-001526,Holiday Inn London - Brentford Lock,,,1700,operator; location code
+PP-001528,Holiday Inn Express London Chingford-Nth Circular,,,1000,operator; location code
+PP-001529,Holiday Inn Express London - City,,,3000,operator; location code
+PP-001532,Holiday Inn Express London - Golders Green (A406),,,100,operator; location code
+PP-001533,Holiday Inn Express London - Greenwich,,,3500,operator; location code
+PP-001534,Crowne Plaza London - Heathrow,,,300,operator; location code
+PP-001535,Holiday Inn Express London - Hammersmith,,,3500,operator; location code
+PP-001536,InterContinental London - The O2,,,4500,operator; location code
+PP-001538,Holiday Inn Express London - Limehouse,,,2000,operator; location code
+PP-001539,"Holiday Inn London - Heathrow M4,Jct.4",,,2000,operator; location code
+PP-001540,Holiday Inn Express & Crowne Plaza London Heathrow T4 (shared car park),,,3500,operator; location code
+PP-001541,"Holiday Inn Express London-Royal Docks, Docklands",,,2000,operator; location code
+PP-001542,Holiday Inn London - Heathrow Bath Road,,,1700,operator; location code
+PP-001543,Holiday Inn Express London - Stratford,,,2200,operator; location code
+PP-001544,Holiday Inn London - Sutton,,,1500,operator; location code
+PP-001545,Holiday Inn Express London - Vauxhall Nine Elms,,,2200,operator; location code
+PP-001546,Holiday Inn Express London - Wandsworth,,,3000,operator; location code
+PP-001548,Holiday Inn London - Kensington High St.,,,4500,operator; location code
+PP-001549,Holiday Inn Express London - Wimbledon South,,,2000,operator; location code
+PP-001550,Holiday Inn Express London - ExCeL,,,2000,operator; location code
+PP-001551,Crowne Plaza London Docklands,,,2500,operator; location code
+PP-001552,Holiday Inn Express London - Southwark,,,3500,operator; location code
+PP-001553,InterContinental London Park Lane,,,6500,operator; location code
+PP-001613,St Thomas' Hospital Car Park (Guy's & St Thomas'),,,350,operator; location code
+PP-001615,Newham University Hospital Car Park (Barts Health),,,200,operator; location code
+PP-001616,"Whipps Cross Hospital Car Parks 1A/1B, 2, 3, 4 & multi-storey (Barts Health)",,,250,operator; location code
+PP-001618,Hammersmith Hospital Parking (Imperial),,,240,operator; location code
+PP-001619,Charing Cross Hospital Parking (Imperial),,,240,operator; location code
+PP-001625,St George's Hospital Tooting – Pay-on-exit Car Park (Blackshaw Road),,,370,operator; location code
+PP-001627,Queen Elizabeth Hospital Woolwich Car Parks (Lewisham & Greenwich),,,220,operator; location code
+PP-001628,University Hospital Lewisham Car Park (Lewisham & Greenwich),,,300,operator; location code
+PP-001629,Queen's Hospital Romford – Multi-storey Car Park (BHR),,,180,operator; location code
+PP-001630,King George Hospital Main Car Park (BHR),,,180,operator; location code
+PP-001631,West Middlesex University Hospital – Main Public & Queen Mary Car Parks (Chelsea,,,320,operator; location code
+PP-001632,Chelsea and Westminster Hospital Underground Car Park,,,330,operator; location code
+PP-001634,Hillingdon Hospital Car Park,,,180,operator; location code
+PP-001635,Mount Vernon Hospital Car Park (Hillingdon Hospitals / Mount Vernon Cancer Centr,,,,operator; location code; price
+PP-001642,Royal Marsden Sutton – Downs Road Car Park,,,200,operator; location code
+PP-001643,Royal Marsden Sutton – Cotswold Road Car Park (Oak Cancer Centre),,,200,operator; location code
+PP-001646,Wakering Road - Barking (Euro Car Parks),,,150,operator; location code
+PP-001647,Eden Park - Beckenham (Euro Car Parks),,,100,operator; location code
+PP-001648,Brentford Health Centre (Euro Car Parks),,,200,operator; location code
+PP-001649,Whalebone Lane South - Dagenham (Euro Car Parks),,,150,operator; location code
+PP-001650,Rectory Park - Northolt (Euro Car Parks),,,100,operator; location code
+PP-001651,The Jolly Badger - Edgware (Euro Car Parks),,,,operator; location code; price
+PP-001652,Great North Leisure Park - Finchley (Euro Car Parks),,,180,operator; location code
+PP-001653,Miller & Carter - Harrow (Euro Car Parks),,,180,operator; location code
+PP-001654,Pump Lane - Hayes (Euro Car Parks),,,80,operator; location code
+PP-001655,Hilton Garden Inn - Heathrow - T2 (Euro Car Parks),,,,operator; location code; price
+PP-001656,Bath Road - Hounslow (Euro Car Parks),,,170,operator; location code
+PP-001657,The Railway - Hornchurch (Euro Car Parks),,,300,operator; location code
+PP-001658,JDW - The Spoons - Ilford (Euro Car Parks),,,150,operator; location code
+PP-001659,The New Fairlop Oak - Barkingside (Euro Car Parks),,,300,operator; location code
+PP-001660,St James Car Park – Kingston (Euro Car Parks),,,100,operator; location code
+PP-001661,Albert Wharf - London (Euro Car Parks),,,300,operator; location code
+PP-001662,Alexandra Palace (Euro Car Parks),,,220,operator; location code
+PP-001664,Beresford Square - Woolwich (Euro Car Parks),,,160,operator; location code
+PP-001665,Browns Brasserie & Bar - Ruislip (Euro Car Parks),,,100,operator; location code
+PP-001666,Cadogan Place - London (Euro Car Parks),,,1200,operator; location code
+PP-001667,Creekside - Greenwich (Euro Car Parks),,,230,operator; location code
+PP-001668,Gray's Inn - South Square (Euro Car Parks),,,550,operator; location code
+PP-001669,Marylebone Square - London (Euro Car Parks),,,850,operator; location code
+PP-001670,Mayfair (Euro Car Parks),,,1000,operator; location code
+PP-001671,Metro Bank - Bridge Retail Park (Euro Car Parks),,,,operator; location code; price
+PP-001672,Metro Bank - Chiswick High Road (Euro Car Parks),,,330,operator; location code
+PP-001673,Morden Wharf - Plot 9 (Euro Car Parks),,,580,operator; location code
+PP-001674,Queens Drive - London (Euro Car Parks),,,75,operator; location code
+PP-001675,Raymond Car Park - Grays Inn (Euro Car Parks),,,550,operator; location code
+PP-001676,Scrubs Lane - London (Euro Car Parks),,,200,operator; location code
+PP-001677,Shoreditch High Street - London (Euro Car Parks),,,1400,operator; location code
+PP-001678,Swedish Wharf - London (Euro Car Parks),,,300,operator; location code
+PP-001679,The Fox on the Hill - Camberwell (Euro Car Parks),,,500,operator; location code
+PP-001680,The Royal Standard - Blackheath (Euro Car Parks),,,,operator; location code; price
+PP-001681,Toby Carvery - South Croydon (Euro Car Parks),,,100,operator; location code
+PP-001682,Verulam Car Park - Grays Inn (Euro Car Parks),,,550,operator; location code
+PP-001683,Victoria Industrial Estate (Euro Car Parks),,,400,operator; location code
+PP-001684,Westway Sports Centre - London (Euro Car Parks),,,100,operator; location code
+PP-001685,Wimbledon Bridge MSCP - London (Euro Car Parks),,,150,operator; location code
+PP-001686,The George Staples (Euro Car Parks),,,100,operator; location code
+PP-001687,Ferryboat Inn (Euro Car Parks),,,280,operator; location code
+PP-001688,Bell Corner - Upminster (Euro Car Parks),,,100,operator; location code
+PP-001689,The Atrium - Uxbridge (Euro Car Parks),,,220,operator; location code
+PP-001690,Uxbridge Sports Club (Euro Car Parks),,,500,operator; location code
+PP-001691,The Star - Woolwich London (Euro Car Parks),,,100,operator; location code
+PP-001692,Blackheath Station - London (Euro Car Parks),,,,operator; location code; price
+PP-001693,Novotel London West,,,4000,operator; location code
+PP-001694,ibis London Heathrow Airport,,,1800,operator; location code
+PP-001695,ibis London Greenwich,,,,operator; location code; price
+PP-001696,Novotel London Waterloo,,,,operator; location code; price
+PP-001697,ibis London Barking & ibis budget London Barking (shared site),,,,operator; location code; price
+PP-001698,ibis London Docklands Canary Wharf,,,,operator; location code; price
+PP-001699,Novotel London Bridge,,,,operator; location code; price
+PP-001701,ibis London Excel Docklands,,,3000,operator; location code
+PP-001702,Novotel London Excel,,,,operator; location code; price
+PP-001703,ibis London Earls Court & Mercure London Earls Court (shared car park),,,,operator; location code; price
+PP-001704,Sofitel London Heathrow,,,,operator; location code; price
+PP-001705,ibis budget London Hounslow,,,,operator; location code; price
+PP-001706,Novotel London Brentford,,,,operator; location code; price
+PP-001707,ibis Styles London Southwark - near Borough Market,,,,operator; location code; price
+PP-001708,Novotel London Wembley,,,,operator; location code; price
+PP-001709,ibis Styles London Ealing,,,,operator; location code; price
+PP-001710,ibis Styles London Heathrow Airport,,,1400,operator; location code
+PP-001711,Aparthotel Adagio London Stratford,,,,operator; location code; price
+PP-001712,The Savoy - A Fairmont Hotel,,,,operator; location code; price
+PP-001713,Aparthotel Adagio London Brentford,,,,operator; location code; price
+PP-001714,Raffles London at The OWO,,,,operator; location code; price
+PP-001715,"St Martins Lane London, a Morgans Originals hotel",,,,operator; location code; price
+PP-001716,ibis London Sutton Point & Aparthotel Adagio London Sutton Point (shared),,,1500,operator; location code
+PP-001717,ibis budget London Heathrow Central,,,,operator; location code; price
+PP-001725,Mile End Hospital – pay & display bays,,,,operator; location code; price
+PP-001727,Purley War Memorial Hospital – Patient & Visitor Car Park,,,,operator; location code; price
+PP-001728,Queen Mary's Hospital Roehampton Car Park,,,200,operator; location code
+PP-001730,Teddington Health & Social Care Centre – rear car park,,,,operator; location code; price
+PP-001731,Tolworth Hospital Car Park,,,300,operator; location code
+PP-001732,Springfield University Hospital Car Parks,,,300,operator; location code
+PP-001738,St Charles Centre for Health and Wellbeing Car Park,,,130,operator; location code
+PP-001747,Heathrow Terminal 2 - Terminal Parking (formerly Short Stay),,,800,operator; location code
+PP-001748,Heathrow Terminal 3 - Terminal Parking (formerly Short Stay),,,800,operator; location code
+PP-001749,Heathrow Terminal 5 - Terminal Parking (formerly Short Stay),,,800,operator; location code
+PP-001751,Heathrow Terminal 2&3 - Park & Ride (formerly Long Stay),,,940,operator; location code
+PP-001752,Heathrow Terminal 4 - Park & Ride Zone A,,,940,operator; location code
+PP-001753,Heathrow Terminal 5 - Park & Ride (formerly Long Stay),,,940,operator; location code
+PP-001754,Heathrow Terminal 5 - Priority Park & Ride (formerly Business Parking),,,4790,operator; location code
+PP-001756,Heathrow Terminal 5 - Pod Parking,,,5960,operator; location code
+PP-001757,"Heathrow - Meet & Greet (T2, T3, T5)",,,14340,operator; location code
+PP-001758,"Heathrow - Valet Parking (T2, T3, T5)",,,,operator; location code; price
+PP-001763,Heathrow Terminal 4 - Priority Pick-Up,,,700,operator; location code
+PP-001767,Gatwick North Terminal – Short Stay,,,800,operator; location code
+PP-001769,Gatwick South Terminal – Short Stay,,,800,operator; location code
+PP-001771,Gatwick North Terminal – Long Stay,,,3800,operator; location code
+PP-001772,Gatwick South Terminal – Long Stay,,,3800,operator; location code
+PP-001781,"Stansted – Short Stay (Orange, Blue, Green and other zones)",,,7000,operator; location code
+PP-001783,Stansted – Mid Stay,,,4800,operator; location code
+PP-001789,Luton – Terminal Car Park 1,,,1500,operator; location code
+PP-001790,Luton – Terminal Car Park 2,,,1500,operator; location code
+PP-001791,Luton – Mid Stay Car Park,,,1500,operator; location code
+PP-001792,Luton – Long Stay Car Park,,,700,operator; location code
+PP-001793,Luton – Priority Parking Drop & Go,,,,operator; location code; price
+PP-001796,London City Airport - Main Stay / Pick-Up Area,,,,operator; location code; price
+PP-001797,London City Airport - Valet Parking,,,,operator; location code; price
+PP-001798,London City Airport - Drop-off Zone,,,800,operator; location code
+PP-001799,London Southend Airport – Superior Car Park (formerly Short Stay),,,,operator; location code; price
+PP-001800,London Southend Airport – Premium Car Park,,,7000,operator; location code
+PP-001801,London Southend Airport – Standard Car Park (formerly Long Stay),,,5500,operator; location code
+PP-001802,London Southend Airport – Budget Car Park (formerly Mid Stay),,,,operator; location code; price
+PP-001803,London Southend Airport – Express Pick-up & Drop-off,,,800,operator; location code
+PP-001817,Parkside Hospital Car Park,APCOA,,200,location code
+PP-001902,Lee Valley Hockey and Tennis Centre – car park,,,400,operator; location code
+PP-001903,Lee Valley Ice Centre – car park,,,,operator; location code; price
+PP-001905,Lee Valley VeloPark – car park,,,400,operator; location code
+PP-001907,Barnet Burnt Oak Leisure Centre – car park,,,,operator; location code; price
+PP-001908,Barnet Copthall Leisure Centre – car park,,,,operator; location code; price
+PP-001909,Hendon Leisure Centre – car park,,,,operator; location code; price
+PP-001910,New Barnet Leisure Centre – car park,,,,operator; location code; price
+PP-001920,Charlton Lido and Lifestyle Club – car park,,,150,operator; location code
+PP-001922,Sutcliffe Park Sports Centre – car park,,,185,operator; location code
+PP-001926,Phoenix Fitness Centre and Janet Adegoke Swimming Pool – car park,,,100,operator; location code
+PP-001930,Glass Mill Leisure Centre – car park,,,,operator; location code; price
+PP-001932,Morden Leisure Centre – car park,,,,operator; location code; price
+PP-001939,Leyton Leisure Centre – car park,,,,operator; location code; price
+PP-001940,Leytonstone Leisure Centre – car park,,,100,operator; location code
+PP-001942,Waltham Forest Feel Good Centre – car park,,,120,operator; location code
+PP-001943,Walthamstow Leisure Centre – car park,,,,operator; location code; price
+PP-001944,Better Gym Walthamstow Stadium – car park,,,500,operator; location code
+PP-001948,Allianz Stadium Twickenham – Cardinal Vaughan car park (match day),,,,operator; location code; price
+PP-001949,Allianz Stadium Twickenham – Rosebine Avenue car park (match day),,,,operator; location code; price
+PP-001950,Allianz Stadium Twickenham – North & West car parks,,,,operator; location code; price
+PP-001952,London Aquatics Centre – car park,,,,operator; location code; price
+PP-001953,Tottenham Hotspur Stadium – official match-day parking,,,,operator; location code; price
+PP-001957,Gtech Community Stadium – official match-day parking,,,,operator; location code; price
+PP-001958,The Valley (Charlton Athletic) – match-day parking,,,,operator; location code; price
+PP-001959,Wimbledon (AELTC) – Car Park 6 (The Championships),,,,operator; location code; price
+PP-001967,Ferryview Health Centre Car Park (rear),,,,operator; location code; price
+PP-001979,Conrad London St. James,,,3800,operator; location code
+PP-001984,London Hilton on Park Lane,,,5000,operator; location code
+PP-001985,Hilton London Bankside,,,4000,operator; location code
+PP-001986,"The BoTree London, Curio Collection by Hilton",,,6000,operator; location code
+PP-001990,DoubleTree by Hilton London - Marble Arch,,,4800,operator; location code
+PP-001994,"The Capital Hotel, Apartments & Townhouse, an SLH Hotel",,,7500,operator; location code
+PP-001995,DoubleTree by Hilton London Angel Kings Cross,,,4000,operator; location code
+PP-001999,Hilton London Metropole,,,600,operator; location code
+PP-002000,DoubleTree by Hilton London - Tower of London,,,4500,operator; location code
+PP-002003,Hilton London Angel Islington,,,4000,operator; location code
+PP-002005,Canopy by Hilton London City,,,3500,operator; location code
+PP-002009,DoubleTree by Hilton London Kensington,,,5000,operator; location code
+PP-002011,DoubleTree by Hilton London - Hyde Park,,,4500,operator; location code
+PP-002012,DoubleTree by Hilton London - Chelsea,,,4800,operator; location code
+PP-002013,Hilton London Olympia,,,4000,operator; location code
+PP-002014,Hilton London Kensington,,,3900,operator; location code
+PP-002015,Hilton London Canary Wharf,,,3000,operator; location code
+PP-002016,"Lincoln Plaza London, Curio Collection by Hilton",,,3000,operator; location code
+PP-002017,DoubleTree by Hilton London Greenwich,,,2500,operator; location code
+PP-002018,Spark by Hilton London Chiswick,,,1500,operator; location code
+PP-002021,Hampton by Hilton London Park Royal,,,2000,operator; location code
+PP-002022,DoubleTree by Hilton London - Ealing,,,1450,operator; location code
+PP-002023,DoubleTree by Hilton London ExCeL,,,1500,operator; location code
+PP-002024,Hampton by Hilton London ExCeL,,,1500,operator; location code
+PP-002026,Hampton by Hilton London Ealing,,,1200,operator; location code
+PP-002029,DoubleTree by Hilton London Kingston Upon Thames,,,850,operator; location code
+PP-002030,Hilton London Croydon,,,1900,operator; location code
+PP-002031,DoubleTree by Hilton London Heathrow Airport,,,1500,operator; location code
+PP-002032,Hilton Garden Inn London Heathrow Airport,,,1800,operator; location code
+PP-002033,Hilton London Heathrow Airport,,,3300,operator; location code
+PP-002064,"The Park Tower Knightsbridge, a Luxury Collection Hotel, London",,,1200,operator; location code
+PP-002066,JW Marriott Grosvenor House London,,,6000,operator; location code
+PP-002067,The St. Regis London,,,8500,operator; location code
+PP-002070,"Bankside Hotel, Autograph Collection",,,6000,operator; location code
+PP-002071,"St. Ermin's Hotel, Autograph Collection",,,6000,operator; location code
+PP-002127,New River Sport & Fitness – car parks (Haringey Council),,,,operator; location code; price
+PP-002140,Greenwich Park – Blackheath Avenue Car Park (The Royal Parks),,,,operator; location code; price
+PP-002174,Eltham Palace and Gardens Car Park (English Heritage),,,,operator; location code; price
+PP-002177,Morden Hall Park Car Park (National Trust),JustPark,80629,,price
+PP-002181,RAF Museum London Car Park,,,850,operator; location code
+PP-002182,Crystal Palace Park – Penge Gate Car Park (Crystal Palace Park Trust),,,,operator; location code; price
+PP-002183,Crystal Palace Park – Paxton Car Park (Crystal Palace Park Trust),,,,operator; location code; price
+PP-002185,WWT London Wetland Centre Car Park,,,400,operator; location code
+PP-002188,Kingston University – Penrhyn Road campus car park,,,,operator; location code; price
+PP-002191,St Mary's University Twickenham – main campus visitor (V) bays,,,,operator; location code; price
+PP-002193,University of Greenwich – Avery Hill Southwood car park,,,100,operator; location code
+PP-002194,University of Greenwich – Avery Hill Sparrows Farm car park,,,100,operator; location code
+PP-002241,University of Greenwich – Greenwich (Maritime) Campus car parks,,,500,operator; location code
+PP-002260,Hyatt Place London Heathrow Airport,,,,operator; location code; price
+PP-002264,Wimbledon Common – Windmill car park (WPCC),,,200,operator; location code
+PP-002278,Walthamstow Wetlands car park,,,,operator; location code; price
+PP-002505,Miiro Templeton Garden,,,4000,operator; location code
+PP-002541,Thistle London Heathrow Terminal 5,,,1800,operator; location code
+PP-002542,The Ritz London,,,5000,operator; location code
+PP-002543,"The Langham, London",,,7500,operator; location code
+PP-002544,"Mandarin Oriental Hyde Park, London",,,,operator; location code; price
+PP-002618,Leonardo Hotel London Heathrow Airport,,,1700,operator; location code
+PP-002622,The Dorchester,,,8500,operator; location code
+PP-002793,Everyman Canary Wharf,,,,operator; location code; price
+PP-002819,ODEON Orpington,,,,operator; location code; price
+PP-002835,Vue North Finchley,,,,operator; location code; price
+PP-002844,Park Plaza London Westminster Bridge,,,7000,operator; location code
+PP-002845,Park Plaza County Hall London,,,6000,operator; location code
+PP-002849,Park Plaza London Waterloo,,,5000,operator; location code
+PP-002851,Park Plaza Victoria London,,,1320,operator; location code
+PP-002855,Holmes Hotel London by Park Plaza,,,1750,operator; location code
+PP-002859,"Radisson Blu Hotel, London Canary Wharf East",,,3000,operator; location code
+PP-002860,Radisson RED London Greenwich The O2,,,2200,operator; location code
+PP-002861,Radisson RED London Twickenham,,,,operator; location code; price
+PP-002862,"Radisson Blu Hotel, London Heathrow",,,600,operator; location code
+PP-002863,Radisson RED Hotel London Heathrow,,,2400,operator; location code
+PP-002864,Radisson Hotel & Conference Centre London Heathrow,,,2400,operator; location code
+PP-002868,"London Chigwell Prince Regent Hotel, BW Signature Collection by Best Western",,,1000,operator; location code
+PP-002869,Best Western Plus Vauxhall Hotel,,,2200,operator; location code
+PP-002872,"The Crown London, WorldHotels Distinctive",,,1899,operator; location code
+PP-002873,"Best Western Heathrow Ariel T2 ,3 ,4",,,1800,operator; location code
+PP-003146,PureGym London Borough,,,200,operator; location code
+PP-003167,PureGym London Hammersmith Palais,,,,operator; location code; price
+PP-003172,PureGym London Ilford,,,100,operator; location code
+PP-003194,PureGym London Shoreditch,,,300,operator; location code
+PP-003205,PureGym London Waterloo,,,480,operator; location code
+PP-003394,Gunnersbury Park Sports Hub (Better),,,100,operator; location code
+PP-003400,Mabley Green Football Pitches (Better),,,260,operator; location code
+PP-003412,Islington Tennis Centre and Gym (Better),,,,operator; location code; price
+PP-003414,Sobell Leisure Centre (Better),,,,operator; location code; price
+PP-003446,Evelina London Children's Hospital,,,350,operator; location code
+PP-003450,Livingston House,,,,operator; location code; price
+PP-003542,Queen Charlotte's and Chelsea Hospital,,,240,operator; location code
+PP-003545,NCP Dagenham Dock Station (C2C),NCP,,1250,location code
+PP-003811,Lee Station - Lee (APCOA),APCOA,,800,location code
+PP-003812,Victoria Car Park - Tower Hamlets (APCOA),APCOA,,450,location code
+PP-003814,Sutton Station - Sutton (APCOA),APCOA,,990,location code
+PP-003815,CitiPark Bell Street – London,,,450,operator; location code
+PP-003816,CitiPark Clipstone Street – London,,,650,operator; location code
+PP-003817,CitiPark London Barbican,,,300,operator; location code
+PP-003818,CitiPark Portman Square – London,,,895,operator; location code
+PP-003819,West India Quay Car Park (Saba),,,500,operator; location code
+PP-003820,London Harley Street (NCP),NCP,,,location code; price
+PP-003824,London Sanderson Forecourt (NCP),NCP,,,location code; price
+PP-003825,London Kensington Marriot Hotel (NCP),NCP,,,location code; price
+PP-003829,London Kendal Street (NCP),NCP,,,location code; price
+PP-003834,London Denman Street (NCP),NCP,,,location code; price
+PP-003835,London Hilton Hotel (NCP),NCP,,,location code; price
+PP-003836,London Collingwood House (NCP),NCP,,,location code; price
+PP-003837,London Chesterfield House (NCP),NCP,,,location code; price
+PP-003838,London Bryanston Street (NCP),NCP,,,location code; price
+PP-003839,London Chiltern Street (NCP),NCP,,,location code; price
+PP-003840,London Audley Square (NCP),NCP,,,location code; price
+PP-003844,London Berkeley Hotel (NCP),NCP,,,location code; price
+PP-003845,London Arlington House (NCP),NCP,,,location code; price
+PP-003846,London Abingdon Street (NCP),NCP,,,location code; price
+PP-003847,London Herbert Crescent (NCP),NCP,,,location code; price
+PP-003848,London Horseferry Road (NCP),NCP,,,location code; price
+PP-003849,London Tufton Street (NCP),NCP,,,location code; price
+PP-003850,London Sydney Street (NCP),NCP,,,location code; price
+PP-003852,London Knightsbridge Green 2 (NCP),NCP,,,location code; price
+PP-003853,London Caxton House (NCP),NCP,,,location code; price
+PP-003854,London Cardinal House (NCP),NCP,,,location code; price
+PP-003857,London Skinner Street (NCP),NCP,,,location code; price
+PP-003859,London Hat & Feathers (NCP),NCP,,,location code; price
+PP-003860,London Owen Street (NCP),NCP,,,location code; price
+PP-003862,London Charterhouse Square (NCP),NCP,,,location code; price
+PP-003864,London Britton Street (NCP),NCP,,,location code; price
+PP-003865,London Great Sutton Street (NCP),NCP,,,location code; price
+PP-003867,London Holywell Lane (NCP),NCP,,,location code; price
+PP-003868,London Tabernacle Street (NCP),NCP,,,location code; price
+PP-003869,London Clere Street (NCP),NCP,,,location code; price
+PP-003870,London Paul Street (NCP),NCP,,,location code; price
+PP-003878,London Drill Hall (NCP),NCP,,,location code; price
+PP-003879,London Pear Tree Street (NCP),NCP,,,location code; price
+PP-003882,London Macclesfield Road (NCP),NCP,,,location code; price
+PP-003889,London Tooting Granada (NCP),NCP,,,location code; price
+PP-003890,London Vauxhall Bridgefoot (NCP),NCP,,,location code; price
+PP-003891,London Elephant & Castle (NCP),NCP,,,location code; price
+PP-003893,London Library Street (NCP),NCP,,,location code; price
+PP-003894,London Cornwall Road (NCP),NCP,,,location code; price
+PP-003895,London Doon Street (NCP),NCP,,,location code; price
+PP-003896,London Myron Place (NCP),NCP,,,location code; price
+PP-003897,Welling Embassy Court (NCP),NCP,,,location code; price
+PP-003900,Croydon Prospect West (NCP),NCP,,,location code; price
+PP-003901,Croydon Poplar Walk (NCP),NCP,,,location code; price
+PP-003902,Croydon Dingwall Road (NCP),NCP,,,location code; price
+PP-003905,Sutton St Nicholas Way (NCP),NCP,,,location code; price
+PP-003907,Bexley Trading World (NCP),NCP,,,location code; price
+PP-003908,Surbiton Victoria Road (NCP),NCP,,,location code; price
+PP-003909,Kingston Brook Street (NCP),NCP,,,location code; price
+PP-003910,Kingston Bishops Hall (NCP),NCP,,,location code; price
+PP-003911,London Leyton (NCP),NCP,,,location code; price
+PP-003912,Uxbridge Vine Street (NCP),NCP,,,location code; price
+PP-003914,Alexandra Palace (Euro Car Parks),,,220,operator; location code
+PP-003915,Alexandra Palace - The Paddocks (Euro Car Parks),,,500,operator; location code
+PP-003916,Beresford Square - Woolwich (Euro Car Parks),,,160,operator; location code
+PP-003917,Blackheath Station - London (Euro Car Parks),,,180,operator; location code
+PP-003918,Browns Brasserie & Bar - Ruislip (Euro Car Parks),,,100,operator; location code
+PP-003919,Cadogan Place - London (Euro Car Parks),,,1200,operator; location code
+PP-003920,Creekside - Greenwich (Euro Car Parks),,,230,operator; location code
+PP-003922,Marylebone Square - London (Euro Car Parks),,,850,operator; location code
+PP-003923,Mayfair (Euro Car Parks),,,1000,operator; location code
+PP-003925,Metro Bank - Chiswick High Road (Euro Car Parks),,,330,operator; location code
+PP-003927,New Capital Quay - Waitrose Car Park (Euro Car Parks),,,450,operator; location code
+PP-003930,Scrubs Lane - London (Euro Car Parks),,,200,operator; location code
+PP-003931,Shoreditch High Street - London (Euro Car Parks),,,1400,operator; location code
+PP-003932,Swedish Wharf - London (Euro Car Parks),,,300,operator; location code
+PP-003933,The Fox on the Hill - Camberwell (Euro Car Parks),,,500,operator; location code
+PP-003934,The Royal Standard - Blackheath (Euro Car Parks),,,140,operator; location code
+PP-003938,Westway Sports Centre - London (Euro Car Parks),,,100,operator; location code
+PP-003939,The George Staples (Euro Car Parks),,,100,operator; location code
+PP-003940,Ferryboat Inn (Euro Car Parks),,,280,operator; location code
+PP-003941,Bell Corner - Upminster (Euro Car Parks),,,100,operator; location code
+PP-003942,The Atrium - Uxbridge (Euro Car Parks),,,220,operator; location code
+PP-003943,Uxbridge Sports Club (Euro Car Parks),,,450,operator; location code
+PP-003944,Wimbledon Bridge MSCP - London (Euro Car Parks),,,150,operator; location code
+PP-003945,The Star - Woolwich London (Euro Car Parks),,,100,operator; location code
+PP-004239,London Marriott Hotel County Hall,,,5500,operator; location code
+PP-004243,Grand Residences by Marriott - Mayfair-London,,,7500,operator; location code
+PP-004264,Aloft by Marriott London Excel,,,2000,operator; location code
+PP-004266,Moxy London Heathrow Airport,,,200,operator; location code
+PP-004267,Courtyard by Marriott London Heathrow Airport,,,1500,operator; location code
+PP-004269,London Heathrow Marriott Hotel,APCOA,,2500,location code
+PP-004270,Renaissance London Heathrow Hotel,,,1500,operator; location code
+PP-004271,Sheraton Heathrow Hotel,,,500,operator; location code

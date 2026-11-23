@@ -1,0 +1,51 @@
+ppId,name,latitude,longitude,geoAsCaptured,sourceUrls
+PP-000141,,,,,
+PP-000577,Charitable Trust Car Park (H&F Council),,,UNCLEAR – not geocoded,https://www.lbhf.gov.uk/parking/pay-and-display/car-parks
+PP-000906,Mercury Walk Car Park,,,UNCLEAR – geocode failed,https://www.towerhamlets.gov.uk/lgnl/transport_and_streets/Parking/Parking-charges-2026-to-2027-New.aspx
+PP-000913,Riverside Area Car Park,,,UNCLEAR – location not stated,https://www.lbbd.gov.uk/parking/parking-area/where-you-can-park
+PP-003821,London Bedfordbury (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-bedfordbury/
+PP-003823,London Euston (NWR) Station (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-euston-nwr-station/
+PP-003826,London Hammersmith Grove (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-hammersmith-grove/
+PP-003827,London Sandringham Mews (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-sandringham-mews/
+PP-003828,London Colonnades (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-colonnades/
+PP-003830,London Metropole Hotel (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-metropole-hotel/
+PP-003831,London Swiss Centre (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-swiss-centre/
+PP-003832,London Marriott Hotel (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-marriott-hotel/
+PP-003833,London Cramer Street (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-cramer-street/
+PP-003841,London Montague Mews South (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-montague-mews-south/
+PP-003842,London Olympia Hilton (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-olympia-hilton/
+PP-003843,London Fenelon Place (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-fenelon-place/
+PP-003851,London Knightsbridge Green (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-knightsbridge-green/
+PP-003877,London Brittania Walk (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-brittania-walk/
+PP-003880,London Layton Road (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-layton-road/
+PP-003881,London Westland Place (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-westland-place/
+PP-003883,London Minories (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-minories/
+PP-003884,London Whites Row (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-whites-row/
+PP-003885,London Rodwell House (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-rodwell-house/
+PP-003886,London Bishopsgate (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-bishopsgate/
+PP-003887,London Cable Street (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-cable-street/
+PP-003892,London Borough High Street (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-borough-high-street/
+PP-003898,London Eltham Allders (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/london-eltham-allders/
+PP-003899,Croydon St Georges Walk (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/croydon-st-georges-walk/
+PP-003903,Croydon Wellesley Grove (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/croydon-wellesley-grove/
+PP-003904,Sutton Eagle Star House (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/sutton-eagle-star-house/
+PP-003906,Sutton Court Road (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/sutton-sutton-court-road/
+PP-003913,Uxbridge Chippendale Way (NCP),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://www.ncp.co.uk/find-a-car-park/car-parks/uxbridge-chippendale-way/
+PP-003926,Morden Wharf - Plot 9 (Euro Car Parks),UNCLEAR,UNCLEAR,UNCLEAR – no exact geocode (no valid postcode; Nominatim found no exact named car park/address),https://ecpparkbuddy.com/locationDetail/?id=6979
+PP-004056,Tesco Camden North Rd Exp,,,NO COORDINATES – postcode not found on postcodes.io (live or terminated); verify,https://www.tesco.com/store-locator/london/24-north-road
+PP-007582,Northala Fields Car Park,,,,https://www.ealing.gov.uk/info/201136/parks_in_the_borough/663/greenford_parks/2; https://www.ealing.gov.uk/download/downloads/id/5404/car_park_charges_spaces_and_opening_times.pdf; https://www.ealing.gov.uk/info/201178/parking/640/car_parks_and_other_visitor_information/4
+PP-007583,Northolt Leisure Centre,,,,https://www.ealing.gov.uk/download/downloads/id/5404/car_park_charges_spaces_and_opening_times.pdf; https://www.ealing.gov.uk/info/201178/parking/640/car_parks_and_other_visitor_information/4; https://www.ealing.gov.uk/info/201193/sports_centres/1604/northolt_leisure_centre
+PP-007584,Southall Market Car Park,,,,https://www.google.com/maps/d/viewer?mid=1SjcVWwWn9Aifoi0RpGXyexls9O4; https://www.ealing.gov.uk/download/downloads/id/5404/car_park_charges_spaces_and_opening_times.pdf
+PP-007586,"Dan Mason Drive, Chiswick",,,,https://www.hounslow.gov.uk/downloads/file/13487/car-parks-consolidation-nom-tmo-p010-25
+PP-007587,"Riverside Drive, Chiswick",,,,https://www.hounslow.gov.uk/downloads/file/13487/car-parks-consolidation-nom-tmo-p010-25
+PP-007588,"The Promenade, Chiswick",,,,https://www.hounslow.gov.uk/downloads/file/13487/car-parks-consolidation-nom-tmo-p010-25
+PP-007589,Caversham Road Car Park,,,,https://www.kingston.gov.uk/parking/how-to-pay-for-parking/off-street-parking-charges ; https://www.kingston.gov.uk/parking/how-to-pay-for-parking/season-tickets
+PP-007590,"Peel House upper level long stay car park, Morden",,,,https://www.merton.gov.uk/streets-parking-transport/parking/find-car-park/peel-upper
+PP-007593,Harrow and Wealdstone Station Side Station Car Park (TfL),,,,https://www.sabaparking.co.uk/en/car-park/harrow-and-wealdstone-station-side-station-car-park-tfl
+PP-007594,Leytonstone Station Car Park (TfL),,,,https://www.sabaparking.co.uk/en/car-park/leytonstone-station-car-park-tfl
+PP-007596,The Minories Car Park,,,,https://www.sabaparking.co.uk/en/car-park/the-minories-car-park
+PP-007598,"Empire Way Car Park, Wembley",,,,https://green-parking.co.uk/car-park/wembley-empire-way-car-park/; https://green-parking.co.uk/sites/
+PP-007602,Chelsea Car Park (London Car Parks),,,,https://www.londoncarparks.co.uk/locations/chelsea/; https://www.londoncarparks.co.uk/contact/; https://www.londoncarparks.co.uk/locations/
+PP-007604,Sloane Square Car Park (London Car Parks),,,,https://www.londoncarparks.co.uk/locations/sloane-square/; https://www.londoncarparks.co.uk/locations/
+PP-012463,Gatwick South Terminal private hire waiting area (PHV),,,,https://www.gatwickairport.com/transport-options/taxi.html
+PP-012702,Motel One UK Ltd,,,,https://www.motel-one.com/en/hotels/london/hotel-london-tower-hill/ ; https://www.motel-one.com/en/services/faq/ ; https://www.motel-one.com/en/the-travel-edit/ ; https://www.motel-one.com/en/travel-compass/ ; https://www.motel-one.com/en/hotels/all-locations/

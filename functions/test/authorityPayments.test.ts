@@ -56,7 +56,8 @@ function mockStripe(payment: PaymentIntentShape) {
 
 async function seed(balancePence: number, paused = false): Promise<void> {
   const db = testDb(PROJECT);
-  await db.collection("places").doc("place-1").set({
+  await db.collection("places").doc("PP-000001").set({
+    source: "pp-sheet",
     payMode: "inapp",
     operator: "RingGo",
     locationCode: "12345",
@@ -87,7 +88,7 @@ async function createParking(stripe: ParkingStripe, visitId = "visit-1"): Promis
   const db = testDb(PROJECT);
   const ref = db.collection("parkingPaymentRequests").doc(`req-${visitId}`);
   await ref.set({
-    uid: "alice", v: 1, action: "create", placeId: "place-1", visitId, operator: "RingGo",
+    uid: "alice", v: 1, action: "create", placeId: "PP-000001", visitId, operator: "RingGo",
     plate: "AB12 CDE", platform: "ios", appVersion: "1.4.0", status: "pending",
     createdAt: Timestamp.now(),
   });

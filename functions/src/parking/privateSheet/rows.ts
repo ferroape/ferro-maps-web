@@ -15,7 +15,11 @@ function sheetCell(value: unknown): unknown {
   return null;
 }
 
-/* First row is the header. `sheetRow` is the 1-based spreadsheet row, including the header. */
+/*
+ * First row is the header. Columns are matched by header name, never by letter.
+ * The Column Guide tab is stale: ALL LONDON (clean) has 67 columns and
+ * Ferro Pay Mode is the last one. `sheetRow` is the 1-based spreadsheet row.
+ */
 export function rowsFromMatrix(matrix: unknown[][]): SourceRow[] {
   if (matrix.length === 0) return [];
   const header = (matrix[0] ?? []).map(headerName);

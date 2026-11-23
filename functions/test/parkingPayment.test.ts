@@ -93,7 +93,8 @@ async function seedDriver(uid = "alice"): Promise<void> {
   await db.collection("users").doc(uid).set({
     subscriptionExpiresAt: Timestamp.fromMillis(Date.now() + 86_400_000),
   });
-  await db.collection("places").doc("place-1").set({
+  await db.collection("places").doc("PP-000001").set({
+    source: "pp-sheet",
     payMode: "inapp",
     operator: "RingGo",
     locationCode: "12345",
@@ -162,7 +163,7 @@ async function putCreate(
     uid: "alice",
     v: 1,
     action: "create",
-    placeId: "place-1",
+    placeId: "PP-000001",
     visitId: extra.visitId ?? id,
     operator: "RingGo",
     plate: "AB12CDE",
@@ -206,7 +207,7 @@ describe("parking payment requests", () => {
       uid: "alice",
       v: 1,
       action: "create",
-      placeId: "place-1",
+      placeId: "PP-000001",
       visitId: "visit-1",
       operator: "ringgo",
       plate: "ab12 cde",
@@ -250,14 +251,14 @@ describe("parking payment requests", () => {
     const created = stripe.creates[0];
     assert.equal(
       created.options.idempotencyKey,
-      paymentIntentIdempotencyKey("alice", "place-1", "visit-1", null, 610),
+      paymentIntentIdempotencyKey("alice", "PP-000001", "visit-1", null, 610),
     );
-    assert.equal(created.options.idempotencyKey, "alice:place-1:visit-1:-:610");
+    assert.equal(created.options.idempotencyKey, "alice:PP-000001:visit-1:-:610");
     assert.equal(created.params.amount, 610);
     assert.equal(created.params.currency, "gbp");
     assert.deepEqual(created.params.metadata, {
       uid: "alice",
-      placeId: "place-1",
+      placeId: "PP-000001",
       visitId: "visit-1",
       chargeType: "parking",
       ferroAccount: EXPECTED_STRIPE_ACCOUNT_ID,
@@ -323,13 +324,13 @@ describe("parking payment requests", () => {
     const payment = shape();
     const stripe = mockStripe(payment);
     await db.collection("parkingPaymentRequests").doc("req-1").set({
-      uid: "alice", v: 1, action: "create", placeId: "place-1", visitId: "visit-1", operator: "RingGo",
+      uid: "alice", v: 1, action: "create", placeId: "PP-000001", visitId: "visit-1", operator: "RingGo",
       plate: "AB12CDE", platform: "android", appVersion: "1.4.0", status: "pending",
       createdAt: Timestamp.now(),
     });
     await runParkingPaymentRequest(db, stripe.stripe, db.collection("parkingPaymentRequests").doc("req-1"), PUBLISHABLE);
     await db.collection("parkingPaymentRequests").doc("req-2").set({
-      uid: "alice", v: 1, action: "create", placeId: "place-1", visitId: "visit-1", operator: "RingGo",
+      uid: "alice", v: 1, action: "create", placeId: "PP-000001", visitId: "visit-1", operator: "RingGo",
       plate: "AB12CDE", platform: "android", appVersion: "1.4.0", status: "pending",
       createdAt: Timestamp.now(),
     });
@@ -349,7 +350,7 @@ describe("parking payment requests", () => {
     const payment = shape();
     const stripe = mockStripe(payment);
     await db.collection("parkingPaymentRequests").doc("req-1").set({
-      uid: "alice", v: 1, action: "create", placeId: "place-1", visitId: "visit-1", operator: "RingGo",
+      uid: "alice", v: 1, action: "create", placeId: "PP-000001", visitId: "visit-1", operator: "RingGo",
       plate: "ab12 cde", platform: "android", appVersion: "1.4.0", status: "pending",
       createdAt: Timestamp.now(),
     });
@@ -407,9 +408,9 @@ describe("parking payment requests", () => {
   it("rejects a place that is not in-app, and lets a driver pay without Gold", async () => {
     const db = testDb(PROJECT);
     await seedDriver();
-    await db.collection("places").doc("place-1").update({payMode: "handoff"});
+    await db.collection("places").doc("PP-000001").update({payMode: "handoff"});
     await db.collection("parkingPaymentRequests").doc("req-1").set({
-      uid: "alice", v: 1, action: "create", placeId: "place-1", visitId: "visit-1", operator: "RingGo",
+      uid: "alice", v: 1, action: "create", placeId: "PP-000001", visitId: "visit-1", operator: "RingGo",
       plate: "AB12CDE", platform: "android", appVersion: "1.4.0", status: "pending",
       createdAt: Timestamp.now(),
     });
@@ -420,12 +421,12 @@ describe("parking payment requests", () => {
     assert.equal(failed?.plate, undefined);
     assert.equal(stripe.creates.length, 0);
 
-    await db.collection("places").doc("place-1").update({payMode: "inapp"});
+    await db.collection("places").doc("PP-000001").update({payMode: "inapp"});
     await db.collection("users").doc("bob").set({
       subscriptionExpiresAt: Timestamp.fromMillis(Date.now() - 1000),
     });
     await db.collection("parkingPaymentRequests").doc("req-bob").set({
-      uid: "bob", v: 1, action: "create", placeId: "place-1", visitId: "visit-2", operator: "RingGo",
+      uid: "bob", v: 1, action: "create", placeId: "PP-000001", visitId: "visit-2", operator: "RingGo",
       plate: "AB12CDE", platform: "android", appVersion: "1.4.0", status: "pending",
       createdAt: Timestamp.now(),
     });
@@ -441,7 +442,7 @@ describe("parking payment requests", () => {
       stripeAccountId: EXPECTED_STRIPE_ACCOUNT_ID,
     });
     await db.collection("parkingPaymentRequests").doc("req-off").set({
-      uid: "bob", v: 1, action: "create", placeId: "place-1", visitId: "visit-3", operator: "RingGo",
+      uid: "bob", v: 1, action: "create", placeId: "PP-000001", visitId: "visit-3", operator: "RingGo",
       plate: "AB12CDE", platform: "android", appVersion: "1.4.0", status: "pending",
       createdAt: Timestamp.now(),
     });
@@ -466,7 +467,7 @@ describe("parking payment requests", () => {
     });
     const stripe = mockStripe(failed, retry);
     await db.collection("parkingPaymentRequests").doc("req-fail").set({
-      uid: "alice", v: 1, action: "create", placeId: "place-1", visitId: "visit-1", operator: "RingGo",
+      uid: "alice", v: 1, action: "create", placeId: "PP-000001", visitId: "visit-1", operator: "RingGo",
       plate: "AB12CDE", platform: "android", appVersion: "1.4.0", status: "pending",
       createdAt: Timestamp.now(),
     });
@@ -479,7 +480,7 @@ describe("parking payment requests", () => {
     assert.deepEqual(stripe.cancels, ["pi_fail"]);
 
     await db.collection("parkingPaymentRequests").doc("req-retry").set({
-      uid: "alice", v: 1, action: "create", placeId: "place-1", visitId: "visit-1", operator: "RingGo",
+      uid: "alice", v: 1, action: "create", placeId: "PP-000001", visitId: "visit-1", operator: "RingGo",
       plate: "AB12CDE", platform: "android", appVersion: "1.4.0", status: "pending",
       createdAt: Timestamp.now(),
     });
@@ -515,7 +516,7 @@ describe("parking payment requests", () => {
     };
     for (const requestId of ["req-a", "req-b", "req-c"]) {
       await db.collection("parkingPaymentRequests").doc(requestId).set({
-        uid: "alice", v: 1, action: "create", placeId: "place-1", visitId: "visit-retry", operator: "RingGo",
+        uid: "alice", v: 1, action: "create", placeId: "PP-000001", visitId: "visit-retry", operator: "RingGo",
         plate: "AB12CDE", platform: "android", appVersion: "1.4.0", status: "pending",
         createdAt: Timestamp.now(),
       });
@@ -524,15 +525,15 @@ describe("parking payment requests", () => {
     assert.equal(creates.length, 3);
     assert.equal(
       creates[0].options.idempotencyKey,
-      paymentIntentIdempotencyKey("alice", "place-1", "visit-retry", null, 610),
+      paymentIntentIdempotencyKey("alice", "PP-000001", "visit-retry", null, 610),
     );
     assert.equal(
       creates[1].options.idempotencyKey,
-      retryIdempotencyKey("alice", "place-1", "visit-retry", "pi_fail1", null, 610),
+      retryIdempotencyKey("alice", "PP-000001", "visit-retry", "pi_fail1", null, 610),
     );
     assert.equal(
       creates[2].options.idempotencyKey,
-      retryIdempotencyKey("alice", "place-1", "visit-retry", "pi_fail2", null, 610),
+      retryIdempotencyKey("alice", "PP-000001", "visit-retry", "pi_fail2", null, 610),
     );
     assert.equal((await db.collection("parkingPayments").doc("pi_fail1").get()).get("status"), "failed");
     assert.equal((await db.collection("parkingPayments").doc("pi_fail2").get()).get("status"), "failed");
@@ -554,7 +555,7 @@ describe("parking payment requests", () => {
       status: "created",
       amount: 610,
       currency: "gbp",
-      placeId: "place-1",
+      placeId: "PP-000001",
       visitId: "visit-decline",
       operator: "RingGo",
       uid: "alice",
@@ -598,7 +599,7 @@ describe("parking payment requests", () => {
     };
     const ref = db.collection("parkingPaymentRequests").doc("req-new");
     await ref.set({
-      uid: "alice", v: 1, action: "create", placeId: "place-1", visitId: "visit-decline", operator: "RingGo",
+      uid: "alice", v: 1, action: "create", placeId: "PP-000001", visitId: "visit-decline", operator: "RingGo",
       plate: "AB12CDE", platform: "android", appVersion: "1.4.0", status: "pending",
       createdAt: Timestamp.now(),
     });
@@ -608,7 +609,7 @@ describe("parking payment requests", () => {
     assert.equal(creates.length, 1);
     assert.equal(
       creates[0]?.options.idempotencyKey,
-      retryIdempotencyKey("alice", "place-1", "visit-decline", "pi_old", null, 610),
+      retryIdempotencyKey("alice", "PP-000001", "visit-decline", "pi_old", null, 610),
     );
     const done = (await ref.get()).data();
     assert.equal(done?.status, "done");
@@ -630,7 +631,7 @@ describe("parking payment requests", () => {
       status: "created",
       amount: 610,
       currency: "gbp",
-      placeId: "place-1",
+      placeId: "PP-000001",
       visitId: "visit-sheet",
       operator: "RingGo",
       uid: "alice",
@@ -660,7 +661,7 @@ describe("parking payment requests", () => {
     };
     const ref = db.collection("parkingPaymentRequests").doc("req-sheet");
     await ref.set({
-      uid: "alice", v: 1, action: "create", placeId: "place-1", visitId: "visit-sheet", operator: "RingGo",
+      uid: "alice", v: 1, action: "create", placeId: "PP-000001", visitId: "visit-sheet", operator: "RingGo",
       plate: "AB12CDE", platform: "android", appVersion: "1.4.0", status: "pending",
       createdAt: Timestamp.now(),
     });
@@ -681,7 +682,7 @@ describe("parking payment requests", () => {
     const payment = shape();
     const stripe = mockStripe(payment);
     await db.collection("parkingPaymentRequests").doc("req-1").set({
-      uid: "alice", v: 1, action: "create", placeId: "place-1", visitId: "visit-1", operator: "RingGo",
+      uid: "alice", v: 1, action: "create", placeId: "PP-000001", visitId: "visit-1", operator: "RingGo",
       plate: "AB12CDE", platform: "android", appVersion: "1.4.0", status: "pending",
       createdAt: Timestamp.now(),
     });
@@ -707,7 +708,7 @@ describe("parking payment requests", () => {
     const leaked = "sk_live_do_not_print";
     const ref = db.collection("parkingPaymentRequests").doc("req-live");
     await ref.set({
-      uid: "alice", v: 1, action: "create", placeId: "place-1", visitId: "visit-1", operator: "RingGo",
+      uid: "alice", v: 1, action: "create", placeId: "PP-000001", visitId: "visit-1", operator: "RingGo",
       plate: "AB12CDE", platform: "android", appVersion: "1.4.0", status: "pending",
       createdAt: Timestamp.now(),
     });
@@ -724,7 +725,7 @@ describe("parking payment requests", () => {
     const db = testDb(PROJECT);
     await seedDriver();
     await db.doc("config/flags").set({parkingDurationPricing: true});
-    await db.collection("places").doc("place-1").update({parkingTariffs: PHONE_TARIFFS});
+    await db.collection("places").doc("PP-000001").update({parkingTariffs: PHONE_TARIFFS});
     const stripe = echoingStripe();
     const between: Array<[number, number]> = [
       [16, 200],
@@ -765,16 +766,16 @@ describe("parking payment requests", () => {
     const sixty = stripe.creates.find((item) => item.params.amount === 510);
     assert.equal(
       sixty?.options.idempotencyKey,
-      paymentIntentIdempotencyKey("alice", "place-1", "stay-60", 60, 510),
+      paymentIntentIdempotencyKey("alice", "PP-000001", "stay-60", 60, 510),
     );
-    assert.equal(sixty?.options.idempotencyKey, "alice:place-1:stay-60:60:510");
+    assert.equal(sixty?.options.idempotencyKey, "alice:PP-000001:stay-60:60:510");
   });
 
   it("cancels an open payment when the next request for that visit has a different length", async () => {
     const db = testDb(PROJECT);
     await seedDriver();
     await db.doc("config/flags").set({parkingDurationPricing: true});
-    await db.collection("places").doc("place-1").update({parkingTariffs: PHONE_TARIFFS});
+    await db.collection("places").doc("PP-000001").update({parkingTariffs: PHONE_TARIFFS});
     const stripe = echoingStripe();
     await putCreate("req-first", {visitId: "visit-same", durationMinutes: 60});
     await runParkingPaymentRequest(
@@ -789,7 +790,7 @@ describe("parking payment requests", () => {
     assert.equal(stripe.creates.length, 2);
     assert.equal(
       stripe.creates[1]?.options.idempotencyKey,
-      retryIdempotencyKey("alice", "place-1", "visit-same", "pi_price1", 15, 260),
+      retryIdempotencyKey("alice", "PP-000001", "visit-same", "pi_price1", 15, 260),
     );
     const second = (await db.collection("parkingPaymentRequests").doc("req-second").get()).data();
     assert.equal(second?.status, "done");
@@ -808,7 +809,7 @@ describe("parking payment requests", () => {
     const db = testDb(PROJECT);
     await seedDriver();
     await db.doc("config/flags").set({parkingDurationPricing: true});
-    await db.collection("places").doc("place-1").update({parkingTariffs: PHONE_TARIFFS});
+    await db.collection("places").doc("PP-000001").update({parkingTariffs: PHONE_TARIFFS});
     const stripe = echoingStripe();
     await putCreate("req-first", {visitId: "visit-same", durationMinutes: 60});
     await runParkingPaymentRequest(
@@ -820,7 +821,7 @@ describe("parking payment requests", () => {
     );
     assert.equal(stripe.creates.length, 1);
     assert.deepEqual(stripe.cancels, []);
-    assert.equal(stripe.creates[0]?.options.idempotencyKey, "alice:place-1:visit-same:60:510");
+    assert.equal(stripe.creates[0]?.options.idempotencyKey, "alice:PP-000001:visit-same:60:510");
     const second = (await db.collection("parkingPaymentRequests").doc("req-second").get()).data();
     assert.equal(second?.status, "done");
     assert.equal(second?.paymentId, "pi_price1");
@@ -833,13 +834,13 @@ describe("parking payment requests", () => {
     const db = testDb(PROJECT);
     await seedDriver();
     await db.doc("config/flags").set({parkingDurationPricing: true});
-    await db.collection("places").doc("place-1").update({parkingTariffs: PHONE_TARIFFS});
+    await db.collection("places").doc("PP-000001").update({parkingTariffs: PHONE_TARIFFS});
     await db.collection("parkingPayments").doc("pi_open1").set({
       v: 1,
       status: "created",
       amount: 510,
       currency: "gbp",
-      placeId: "place-1",
+      placeId: "PP-000001",
       visitId: "visit-open",
       operator: "RingGo",
       uid: "alice",
@@ -886,7 +887,7 @@ describe("parking payment requests", () => {
     const db = testDb(PROJECT);
     await seedDriver();
     await db.doc("config/flags").set({parkingDurationPricing: true});
-    await db.collection("places").doc("place-1").update({
+    await db.collection("places").doc("PP-000001").update({
       parkingPence: 999,
       parkingTariffs: PHONE_TARIFFS,
     });
@@ -895,7 +896,7 @@ describe("parking payment requests", () => {
       status: "paid",
       amount: 610,
       currency: "gbp",
-      placeId: "place-1",
+      placeId: "PP-000001",
       visitId: "visit-paid",
       operator: "RingGo",
       uid: "alice",
@@ -948,14 +949,14 @@ describe("parking payment requests", () => {
     assert.equal(creates, 0);
     assert.deepEqual(cancels, []);
     assert.equal((await db.collection("parkingPayments").doc("pi_paid1").get()).get("status"), "paid");
-    assert.equal((await db.collection("places").doc("place-1").get()).get("parkingPence"), 999);
+    assert.equal((await db.collection("places").doc("PP-000001").get()).get("parkingPence"), 999);
   });
 
   it("rejects a missing, non-integer, or out-of-range duration and a stay past the table", async () => {
     const db = testDb(PROJECT);
     await seedDriver();
     await db.doc("config/flags").set({parkingDurationPricing: true});
-    await db.collection("places").doc("place-1").update({parkingTariffs: PHONE_TARIFFS});
+    await db.collection("places").doc("PP-000001").update({parkingTariffs: PHONE_TARIFFS});
     const stripe = echoingStripe();
     const cases: Array<{id: string; duration?: unknown; code: string}> = [
       {id: "missing", code: "duration-required"},
@@ -991,7 +992,7 @@ describe("parking payment requests", () => {
     assert.equal(allDay?.parkingPence, 1800);
     assert.equal(allDay?.amount, 1960);
 
-    await db.collection("places").doc("place-1").update({
+    await db.collection("places").doc("PP-000001").update({
       parkingTariffs: PHONE_TARIFFS.filter((row) => row.maxMinutes <= 120),
     });
     await putCreate("past-table", {durationMinutes: 180});
@@ -1006,7 +1007,7 @@ describe("parking payment requests", () => {
   it("ignores duration on a flat-priced place, including an invalid one", async () => {
     const db = testDb(PROJECT);
     await seedDriver();
-    await db.collection("places").doc("place-1").update({parkingTariffs: PHONE_TARIFFS});
+    await db.collection("places").doc("PP-000001").update({parkingTariffs: PHONE_TARIFFS});
     await db.doc("config/flags").set({parkingDurationPricing: "true"});
     const stripe = mockStripe(shape());
     await putCreate("flat-14", {durationMinutes: 14, amount: 1});
@@ -1035,7 +1036,7 @@ describe("parking payment requests", () => {
     const db = testDb(PROJECT);
     await seedDriver();
     await db.doc("config/flags").set({parkingDurationPricing: true});
-    await db.collection("places").doc("place-1").update({
+    await db.collection("places").doc("PP-000001").update({
       parkingTariffs: [{maxMinutes: 60, pence: 4900}],
     });
     const stripe = echoingStripe();

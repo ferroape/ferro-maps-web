@@ -69,7 +69,25 @@ const OPERATORS: Record<string, string> = {
   ringgo: "RingGo",
   paybyphone: "PayByPhone",
   justpark: "JustPark",
+  ncp: "NCP",
+  apcoa: "APCOA",
+  apcoaparking: "APCOA",
+  apcoaparkinguk: "APCOA",
+  qpark: "Q-Park",
 };
+
+/* places/{id} written by the private-parking sheet sync. The charge path accepts only this source. */
+export const PP_SHEET_SOURCE = "pp-sheet";
+
+/* Stable id on ALL LONDON (clean), column Place ID. */
+export function isPpPlaceId(value: unknown): value is string {
+  return typeof value === "string" && /^PP-\d{6}$/.test(value);
+}
+
+/* In-app Autopay charges only a sheet place. Example and debug ids are refused. */
+export function autopayPlaceAllowed(placeId: unknown, source: unknown): boolean {
+  return isPpPlaceId(placeId) && source === PP_SHEET_SOURCE;
+}
 
 // Forward only. A succeeded PaymentIntent is applied as created → processing → paid
 // so the plate can be registered on the way into processing. failed is written only

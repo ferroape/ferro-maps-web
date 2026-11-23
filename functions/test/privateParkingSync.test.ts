@@ -19,7 +19,7 @@ import {
 
 const HEAD = [
   "Location Name", "Postcode", "Latitude", "Longitude", "Location Status",
-  "Evidence Type", "Who Can Park", "Verification Result",
+  "Evidence Type", "Who Can Park", "Verification Result", "Place ID",
 ];
 
 const NOW = new Date("2026-11-01T00:00:00.000Z");
@@ -28,8 +28,11 @@ function sheet(rows: unknown[][]): unknown[][] {
   return [HEAD, ...rows];
 }
 
-const YARD = ["Yard", "W1 1AA", "51.50", "-0.12", "Open", "Official site: partial info", "Customers only", "Confirmed"];
-const OTHER = ["Other", "W1 1AB", "51.50", "-0.12", "Open", "Google Maps only", "Anyone", ""];
+const YARD = ["Yard", "W1 1AA", "51.50", "-0.12", "Open", "Official site: partial info", "Customers only", "Confirmed", "PP-000010"];
+const OTHER = [
+  "Other", "W1 1AB", "51.50", "-0.12", "Open", "Google Maps only", "Anyone",
+  "Confirmed, details not published", "PP-000011",
+];
 
 describe("private parking sheet sync", () => {
   it("uses the read-only Sheets scope and the importer mapping", async () => {
@@ -66,7 +69,7 @@ describe("private parking sheet sync", () => {
       now: NOW,
       enabled: true,
       sheetId: "sheet-id",
-      tab: "tab",
+      tab: "ALL LONDON (clean)",
       lastGoodRowCount: null,
       existing: [],
       loadSheet: async () => sheet([YARD, OTHER]),
@@ -83,7 +86,7 @@ describe("private parking sheet sync", () => {
       now: new Date(NOW.getTime() + 60 * 60 * 1000),
       enabled: true,
       sheetId: "sheet-id",
-      tab: "tab",
+      tab: "ALL LONDON (clean)",
       lastGoodRowCount: 2,
       existing,
       loadSheet: async () => {
@@ -101,7 +104,7 @@ describe("private parking sheet sync", () => {
       now: NOW,
       enabled: true,
       sheetId: "sheet-id",
-      tab: "tab",
+      tab: "ALL LONDON (clean)",
       lastGoodRowCount: null,
       existing: [],
       loadSheet: async () => sheet([YARD, OTHER]),
@@ -118,7 +121,7 @@ describe("private parking sheet sync", () => {
       now: later,
       enabled: true,
       sheetId: "sheet-id",
-      tab: "tab",
+      tab: "ALL LONDON (clean)",
       lastGoodRowCount: 1,
       existing,
       loadSheet: async () => sheet([YARD]),
@@ -131,7 +134,7 @@ describe("private parking sheet sync", () => {
       now: later,
       enabled: true,
       sheetId: "sheet-id",
-      tab: "tab",
+      tab: "ALL LONDON (clean)",
       lastGoodRowCount: 2,
       existing,
       loadSheet: async () => sheet([]),
@@ -208,10 +211,10 @@ describe("private parking sheet sync", () => {
       return sheet([YARD]);
     };
     const disabled = await syncPrivateParkingOnce({
-      now: NOW, enabled: false, sheetId: "sheet-id", tab: "tab", lastGoodRowCount: null, existing: [], loadSheet,
+      now: NOW, enabled: false, sheetId: "sheet-id", tab: "ALL LONDON (clean)", lastGoodRowCount: null, existing: [], loadSheet,
     });
     const missing = await syncPrivateParkingOnce({
-      now: NOW, enabled: true, sheetId: "", tab: "tab", lastGoodRowCount: null, existing: [], loadSheet,
+      now: NOW, enabled: true, sheetId: "", tab: "ALL LONDON (clean)", lastGoodRowCount: null, existing: [], loadSheet,
     });
     assert.equal(calls, 0);
     assert.equal(disabled.status, "disabled");
@@ -226,7 +229,7 @@ describe("private parking sheet sync", () => {
       now: NOW,
       enabled: true,
       sheetId: "sheet-id",
-      tab: "tab",
+      tab: "ALL LONDON (clean)",
       existing: [] as ExistingCellDoc[],
     };
     const failed = await syncPrivateParkingOnce({
@@ -251,7 +254,8 @@ describe("private parking sheet sync", () => {
     assert.equal(zero.writes.length, 0);
 
     const rows = (count: number) => Array.from({length: count}, (_, index) => [
-      `Place ${index}`, "W1 1AA", (51.5 + index * 0.0001).toFixed(5), "-0.12", "Open", "", "", "",
+      `Place ${index}`, "W1 1AA", (51.5 + index * 0.0001).toFixed(5), "-0.12", "Open", "", "", "Confirmed",
+      `PP-${String(index + 1).padStart(6, "0")}`,
     ]);
     const dropped = await syncPrivateParkingOnce({
       ...base,
@@ -291,6 +295,9 @@ describe("private parking sheet sync", () => {
     const used = new Set<string>();
     for (const match of mapping.matchAll(/values\["([^"]+)"\]/g)) used.add(match[1]);
     for (const match of mapping.matchAll(/values\.([A-Za-z]+)/g)) used.add(match[1]);
+    assert.equal(LONDON_CLEAN_HEADERS.length, 67);
+    assert.equal(LONDON_CLEAN_HEADERS[66], "Ferro Pay Mode");
+    assert.equal(LONDON_CLEAN_HEADERS.includes("Ferro Pay Mode"), true);
     for (const name of used) assert.ok(LONDON_CLEAN_HEADERS.includes(name), name);
     const open = Object.fromEntries(LONDON_CLEAN_HEADERS.map((name) => [name, null]));
     Object.assign(open, {
@@ -298,6 +305,8 @@ describe("private parking sheet sync", () => {
       "Can Park? (Yes/No/Conditional)": "Conditional",
       "Who Can Park": "Customers only",
       "Location Status": "Open",
+      "Verification Result": "Confirmed",
+      "Place ID": "PP-000002",
       "Price Status": "Published",
       "Tariff Type": "Free with time limit",
       "Tariff Detail": "Free for up to 2 hrs",
@@ -458,7 +467,8 @@ describe("private parking sheet sync", () => {
         index % 50 === 0 ? "Closed" : "Open",
         "Official site: clear answer",
         "Anyone",
-        "",
+        "Confirmed",
+        `PP-${String(index + 1).padStart(6, "0")}`,
         index % 40 === 0 ? "No" : "Yes",
       ];
     });
@@ -531,6 +541,8 @@ describe("private parking sheet sync", () => {
       "Longitude": "-0.12",
       "Can Park? (Yes/No/Conditional)": "Yes",
       "Price Status": "Published",
+      "Verification Result": "Confirmed",
+      "Place ID": "PP-000087",
     };
     assert.equal(mapPlace({...basePlace, "Parking Charge (£)": "£0.87"}).fee, 87);
     assert.equal(mapPlace({...basePlace, "Parking Charge (£)": 0.87}).fee, 87);
@@ -545,7 +557,7 @@ describe("private parking sheet sync", () => {
       now: NOW,
       enabled: true,
       sheetId: "sheet-id",
-      tab: "tab",
+      tab: "ALL LONDON (clean)",
       lastGoodRowCount: null,
       existing: [],
       loadSheet: async () => [head, row],
@@ -564,7 +576,7 @@ describe("private parking sheet sync", () => {
       now: new Date(NOW.getTime() + 60 * 60 * 1000),
       enabled: true,
       sheetId: "sheet-id",
-      tab: "tab",
+      tab: "ALL LONDON (clean)",
       lastGoodRowCount: 1,
       existing: [{
         id: written.id,
@@ -584,7 +596,7 @@ describe("private parking sheet sync", () => {
       now: NOW,
       enabled: true,
       sheetId: "sheet-id",
-      tab: "tab",
+      tab: "ALL LONDON (clean)",
       lastGoodRowCount: null,
       existing: [],
       loadSheet: async () => [head, freeRow],
@@ -595,7 +607,7 @@ describe("private parking sheet sync", () => {
       now: new Date(NOW.getTime() + 60 * 60 * 1000),
       enabled: true,
       sheetId: "sheet-id",
-      tab: "tab",
+      tab: "ALL LONDON (clean)",
       lastGoodRowCount: 1,
       existing: [{
         id: freeWrite.id,
@@ -625,8 +637,8 @@ const LONDON_CLEAN_HEADERS = [
   "Agreeing Sources", "Conflict", "Confidence (1-5)", "Captured By", "Date Captured",
   "Verified By", "Verified Date", "Verification Result", "Change Made (Yes/No)",
   "Latitude", "Longitude", "Geo Source", "Geo Precision", "Geo (as captured)", "Notes",
-  "Review Flag", "Flag Status", "Free Stay Countdown (mins)", "Ferro Autopay", "Ferro Pay Mode",
+  "Review Flag", "Flag Status", "Free Stay Countdown (mins)", "Ferro Autopay",
   "Parking Charge (£)", "Total incl. Ferro Fee (£)", "Decision Reason", "Place ID",
   "Evidence Level", "OSM ID", "Postcode (derived from pin)", "Pin to postcode distance (m)",
-  "Place Type", "Terminal", "Penalty Note", "Entry Note",
+  "Place Type", "Terminal", "Penalty Note", "Entry Note", "Ferro Pay Mode",
 ];

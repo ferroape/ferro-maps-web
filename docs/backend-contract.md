@@ -499,7 +499,7 @@ Same 9 geohash-6 ids and the same `whereIn` + 8 s query as street cells. Cache 6
 
 `v == 1` and a future `expiresAt` are **required**, or the whole cell is hidden. `expiresAt` is `generatedAt + 14 days`. A live cell keeps at least 7 days of that lifetime ahead of now. A cell or shard whose `expiresAt` is in the past is empty: clients hide it, including a copy in the local cache, even if `places` is still filled. Also `cell`, `generatedAt`, `places`. `shards` follows [section 5](#5-shards). The base doc is a full payload. Siblings use the same schema, including `v` and `expiresAt`. Clients ignore `shards` on a sibling. Omit `shards` when there is no sibling.
 
-`syncPrivateParkingSheet` runs every hour, `Europe/London`, `europe-west2`, codebase `default`. Its runtime account is the param `PRIVATE_PARKING_SYNC_SERVICE_ACCOUNT`. For `ferro-maps-staging-v2` that is `private-parking-sync@ferro-maps-staging-v2.iam.gserviceaccount.com`. Another project sets the param to its own account. It reads `PRIVATE_PARKING_SHEET_ID` and `PRIVATE_PARKING_SHEET_TAB` with the Sheets API, scope `spreadsheets.readonly`. The London sheet is `1VHtzY1001e0aRSXE6s_-IJU9YioJtjSNZ5WCOt1IO-o`, tab `ALL LONDON (clean)` (about 12,500 rows, 66 columns). The read is paged at 1,000 rows. Rows with no usable lat/lng, a closed or temporarily closed status, or `Can Park?` of No are not imported.
+`syncPrivateParkingSheet` runs every hour, `Europe/London`, `europe-west2`, codebase `default`. Its runtime account is the param `PRIVATE_PARKING_SYNC_SERVICE_ACCOUNT`. For `ferro-maps-staging-v2` that is `private-parking-sync@ferro-maps-staging-v2.iam.gserviceaccount.com`. Another project sets the param to its own account. It reads `PRIVATE_PARKING_SHEET_ID` and `PRIVATE_PARKING_SHEET_TAB` with the Sheets API, scope `spreadsheets.readonly`. The London sheet is `1VHtzY1001e0aRSXE6s_-IJU9YioJtjSNZ5WCOt1IO-o`, tab `ALL LONDON (clean)` (about 12,000 rows, 67 columns). Columns are read by header name. The read is paged at 1,000 rows. `UK PILOT - Birmingham` and every other tab are not location sources. `TARIFFS` is read only for prices, keyed by `PP-######`. Rows with no usable lat/lng, a closed or temporarily closed status, `Can Park?` of No, a missing name, a missing `PP-######` id, or a Verification Result other than Confirmed, Confirmed details not published, or Corrected are not imported.
 
 The sync does nothing unless `config/privateParking.enabled` is exactly true. That field only controls this job. It is not `config/flags.privateParking`, and it never shows or hides the layer in either app.
 
@@ -515,7 +515,7 @@ Every field except `p` may be null. A bad row drops alone. Dedupe by `id`, else 
 
 | Field | Type | Notes |
 |---|---|---|
-| `p` | `[lat, lng]`, GeoPoint, or `{lat\|latitude, lng\|longitude}` | Required. Out of range or `(0,0)` drops the row |
+| `p` | `[lat, lng]`, GeoPoint, or `{lat\|latitude, lng\|longitude}` | Required. A point outside the UK box (lat 49.8–60.9, lng -8.7–1.8), including `(0,0)`, drops the row |
 | `id` | string | Needed to enter, count down, report, or pay. Without it the row can still be shown |
 | `n` | string | Name |
 | `r` | int metres, `> 0` | The monitor clamps to `10..300`. No `r`: never entered |
@@ -534,7 +534,7 @@ Every field except `p` may be null. A bad row drops alone. Dedupe by `id`, else 
 | `src` | string | Source label |
 | `capturedAt` | timestamp | |
 | `payMode` | `inapp`, `handoff`, `off` | Case-insensitive; `_` and `-` ignored. Missing or unknown means **handoff** |
-| `operator` | string | Letters and digits only. Must match RingGo, PayByPhone, or JustPark, case-insensitive. Otherwise no pay offer |
+| `operator` | string | Letters and digits only. Must match RingGo, PayByPhone, JustPark, NCP, APCOA, or Q-Park, case-insensitive. Otherwise no pay offer |
 | `locationCode` | string, or number `≥ 0` | Shown for the driver to type. Omit when the rules text has no code |
 | `locationProvider` | string | Optional slug beside `locationCode`, lowercase, for example `paybyphone`, `ringgo`, `justpark`. Omit both fields when the rules text has no code. Never the raw sentence |
 | `approx` | `true` | Optional. `true` when the point is a postcode centroid, area centre, street, or nearby POI. Apps draw an area circle instead of a pin. Omit when the point is finer. Never `false` |
@@ -550,11 +550,11 @@ The London import (`scripts/import-private-parking/import.ts`, sheet `ALL LONDON
 - It does not set `r`. Absent `r` is unchanged: the monitor never enters. Radius stays the client's own default.
 - `payMode` comes from the optional `Ferro Pay Mode` column. The cell is trimmed and matched case-insensitively to `inapp`, `handoff`, or `off`, and stored as that lowercase token. Hyphens and underscores are not removed, so `in-app` and `in_app` are not accepted. A blank cell omits the field. Any other value omits the field and logs a warning that names only the row's Place ID, or the sheet row number when Place ID is blank, and never the cell text. A sheet without the column leaves `payMode` unset. Missing `payMode` is **handoff**.
 - It does not set `tl`. Quads are deferred.
-- `q` is `known` only for a confirmed or corrected check.
+- `q` is `known` for Confirmed, Confirmed details not published, and Corrected. Other results are not published.
 - `conf` is the 1–5 score divided by 5, omitted when the score is blank.
 - `fee` is the published pound charge times 100, and only when the price status is published.
-- `operator` is the published operator name. `Not published` is omitted. Pay or Ignore still requires RingGo, PayByPhone, or JustPark.
-- Place `id` is the sha256 of the normalised name, the postcode, and lat/lng rounded to 4 decimal places, so a re-run upserts the same place. Rows that share that name and postcode are merged before the hash.
+- `operator` is the published operator name. `Not published` is omitted. Pay or Ignore still requires RingGo, PayByPhone, JustPark, NCP, APCOA, or Q-Park.
+- Place `id` is the sheet's `PP-######` value from the Place ID column. A re-run upserts that id. Rows that share it are merged. The old sha256 of name, postcode, and lat/lng is deleted when it is still on the sheet.
 - `src` is the first source URL.
 - `srcType` is only `official`, `gmaps`, `onsite`, or `none`. A partial official source is `official`. Blank evidence omits `srcType`. Any other evidence text is `none`.
 
@@ -571,6 +571,9 @@ Hand-off opens the operator's public site. No deep link and no prefill in v1:
 | RingGo | `https://www.ringgo.co.uk/` |
 | PayByPhone | `https://www.paybyphone.co.uk/` |
 | JustPark | `https://www.justpark.com/` |
+| NCP | `https://www.ncp.co.uk/` |
+| APCOA | `https://www.apcoa.co.uk/` |
+| Q-Park | `https://www.q-park.co.uk/` |
 
 The installed app opens only if it claims that link. The server does not send URLs.
 

@@ -51,7 +51,9 @@ Why: both codebases deploy to the same project in region `europe-west2`. firebas
 
 Do not deploy from this change until the steps below are done. Neither feed writes anything until its `config/*.enabled` field is exactly true.
 
-Parking sync runtime account: `private-parking-sync@ferro-maps-staging-v2.iam.gserviceaccount.com` (`PRIVATE_PARKING_SYNC_SERVICE_ACCOUNT`). Share spreadsheet `1VHtzY1001e0aRSXE6s_-IJU9YioJtjSNZ5WCOt1IO-o` with that account as a viewer. The tab is `ALL LONDON (clean)`. Params live in `functions/.env.ferro-maps-staging-v2`.
+Do not deploy `syncPrivateParkingSheet` to `ferro-maps-staging-v2` for the dev sheet setup. The dev project is `ferro-maps-dev`. Its params live in `functions/.env.ferro-maps-dev`. The runtime account is `private-parking-sync@ferro-maps-dev.iam.gserviceaccount.com`. Share spreadsheet `1VHtzY1001e0aRSXE6s_-IJU9YioJtjSNZ5WCOt1IO-o` with that account as a Viewer. Do not create a service-account key. The location tab is `ALL LONDON (clean)` only.
+
+Staging, when a later deploy is intended, still uses `private-parking-sync@ferro-maps-staging-v2.iam.gserviceaccount.com` (`PRIVATE_PARKING_SYNC_SERVICE_ACCOUNT`). Params live in `functions/.env.ferro-maps-staging-v2`.
 
 Road-charge runtime account: `road-charges-sync@ferro-maps-staging-v2.iam.gserviceaccount.com` (`ROAD_CHARGES_SYNC_SERVICE_ACCOUNT`). Create that account before deploying `syncRoadCharges` or `onRoadChargesImportRequest`. Grant it `roles/datastore.user` and `roles/logging.logWriter` on `ferro-maps-staging-v2`. Enable the Google Drive API. Share Drive file `1FVYnb0Ho6Cr-ITk8rO-gbJdNEVSMzDSK` with that account as a viewer. The file is an `.xlsx`, not a Google Sheet.
 

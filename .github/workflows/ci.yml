@@ -43,6 +43,10 @@ jobs:
         working-directory: scripts/import-road-charge-zones
         run: npm ci && npm test
 
+      - name: Test dev hotspot mirror
+        working-directory: scripts/mirror-dev-hotspots
+        run: npm ci && npm test
+
       - name: Install function dependencies
         working-directory: functions
         run: npm ci
